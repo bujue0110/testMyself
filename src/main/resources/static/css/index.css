@@ -1,0 +1,246 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.navbar-header{
+    margin-top: 8px;
+}
+.navbar-default{
+    background-color: #fff;
+}
+.navbar-brand{
+    padding:0;
+}
+.navbar-right{
+    margin-top:0
+}
+
+.navbar-nav>li>a{
+    line-height: 10px;
+    margin: 10px 5px;
+}
+.navbar-form{
+    line-height: 48px;
+}
+.login,.register{
+    border: 1px solid #EA6F5A;
+    border-radius: 5px;
+    width: 80px;
+    text-align: center;
+    color: #EA6F5A!important;
+}
+.login:hover,.register:hover{
+    background-color: #FEF8EF!important;
+}
+.btn-for-search{
+    margin-bottom: -1px!important;
+}
+
+.questions-ul{
+    border: 1px solid #d9d9d9;
+    width: 60%;
+    margin: 80px auto;
+    padding:50px 40px;
+}
+.questions-li{
+    list-style: decimal;
+    list-style-position: inside;
+    line-height: 20px;
+    padding: 10px 10px 20px 10px;
+    border-bottom: 1px dashed #EA6F5A;
+
+}
+.questions-li:last-of-type{
+    border-bottom: none;
+}
+.select-answer{
+    float: right;
+    display: inline-block;
+    margin-right: 10%;
+}
+.questions-li pre{
+    margin: 10px 30px;
+}
+ .ul-line{
+    display: inline-block;
+    border-bottom: 3px solid #EA6F5A;
+    width: 100%;
+    height: 1px;
+
+}
+.questions-ul .btn-group{
+    display: block;
+    text-align: right;
+    margin-top: 20px;
+}
+.questions-ul .btn-group .btn-fav{
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    background-color:#EA6F5A ;
+    border-radius: 3px;
+    border: none;
+    margin-right: 20px;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.questions-ul .btn-group .btn-fav :hover{
+    border: 1px solid rgba(155,170,230,0.5);
+}
+.questions-ul .btn-group .btn-answer{
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    background-color:#10AB55 ;
+    border-radius: 3px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.iframe-head{
+    width: 100% !important;
+    border: none !important;
+    height: 66px !important;
+    position: fixed;
+    top:0;
+    z-index: 100;
+}
+.father{
+    width: 980px;
+    margin: 0 auto;
+}
+
+.father .logo-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.father .logo-container .logo-left{
+    width: 480px;
+    height:260px;
+    background:url("../img/png/bgweb_054d9d5.jpg") no-repeat;
+    background-size: 480px 260px;
+    cursor: pointer;
+    user-select: none;
+}
+.father .logo-container .logo-right{
+    width: 490px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.father .logo-container h4{
+    color: #FFFFFF;
+    font: normal normal 16px/20px '微软雅黑';
+    margin: 0;
+}
+.father .logo-container .type-logo{
+    margin-bottom: 10px;
+    width: 240px;
+    height:125px;
+    background:url("../img/bgpython_c21a999.jpg") no-repeat;
+    background-size: 240px 125px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.father .logo-container .type-logo:nth-of-type(4){
+    background:url("../img/png/bgwechat_2357330.jpg") no-repeat;
+}
+.father .logo-container .type-logo:nth-of-type(3){
+    background:url("../img/png/bgios_cadb5b0.jpg") no-repeat;
+}
+.father .logo-container .type-logo:nth-of-type(2){
+    background:url("../img/png/bggo_6ac4e5b.jpg") no-repeat;
+}
+.father .logo-container .logo-modal{
+    display: inline-block;
+    width: 100%;
+    height: 125px;
+    background: rgba(0,0,0,0);
+    text-align: center;
+    padding: 30px 0;
+}
+.father .logo-container .logo-left .logo-modal{
+    height: 260px;
+    padding: 50px 0;
+}
+.father .logo-container .logo-modal:hover{
+    background: rgba(0,0,0,0.3);
+}
+.father .logo-container .type-logo:hover,.father .logo-container .logo-left:hover{
+    box-shadow:2px 2px 5px #9cc8d0;
+}
+.father .more-type{
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    user-select: none;
+}
+.hidden{
+    display: none;
+}
+.show{
+    display: block;
+}
+.father .more-types{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.father .more-types .little-type{
+    width: 320px;
+    height:75px;
+    background-size: 320px 75px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.father .more-types .little-type:nth-of-type(2){
+    background:url("../img/png/jiuye-ux03_45d7813.png") no-repeat;
+}
+.father .more-types .little-type:nth-of-type(3){
+    background:url("../img/png/jiuye-java03_302dbd8.png") no-repeat;
+}
+.father .more-types .little-type:nth-of-type(4){
+    background:url("../img/png/jiuye-php03_8cdf521.png") no-repeat;
+}
+.father .more-types .little-type:nth-of-type(5){
+    background:url("../img/png/jiuye-node03_b78e3f6.png") no-repeat;
+}
+.father .more-types .little-type:first-of-type{
+    background:url("../img/png/jiuye-web03_b78e3f6.png") no-repeat;
+}
+.father .more-types .little-type:last-of-type{
+    background:url("../img/png/jiuye-lla.png") no-repeat;
+}
+
+.father .more-types .little-type h4{
+    color:#FFFFFF;
+    padding-left: 120px;
+    text-align: center;
+    line-height: 75px;
+    font-weight: normal;
+    margin: 0!important;
+}
+.father .more-types .little-type h3{
+    color:#FFFFFF;
+    text-align: center;
+    line-height: 75px;
+    font-weight: normal;
+    margin: 0!important;
+}
+.indent{
+    margin-left: 20px!important;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>自测系统</title>
+</head>
+<body>
+<div th:fragment="head">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand" >
+                <img th:src="@{/img/logo.png}" alt="自测系统">
+            </a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+
+
+
+
+                <li>
+                    <a href="/login" class="register" th:unless="${#httpServletRequest.remoteUser != null}">登录</a>
+                    <!-- Single button -->
+                    <div class="btn-group" th:if="${#httpServletRequest.remoteUser != null}">
+                        <button type="button" th:text="${#httpServletRequest.remoteUser}" class="btn btn-default dropdown-toggle register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">bbb</a></li>
+                            <li><a href="#">我的资料</a></li>
+                            <li><a href="#">我的收藏</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">退出登录</a></li>
+                        </ul>
+                    </div>
+
+
+                    <!--<a href="#" class="register" th:if="${#httpServletRequest.remoteUser != null}" th:text="${#httpServletRequest.remoteUser}"></a>-->
+                </li>
+
+                <li><a href="#" class="register"> 注册</a></li>
+
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索">
+                </div>
+                <button onclick="onSearch()" class="btn btn-default btn-for-search">搜索</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+    function onSearch(){
+        alert('点击搜索');
+    }
+    function loadUserFavorites(){
+        $.ajax({
+            async: false,
+            type: 'POST',
+            dataType: 'json',
+            url: '/favorites/getFavorites/'+$("#userId").val(),
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            },
+            success: function(favorites){
+                initUserFavorites(favorites);
+            }
+        });
+    }
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="selfTest">
+
+        <!-- Jta-data-source 用于指定持久化提供商使用的JTA数据源的全局JNDI名称(可选) -->
+        <jta-data-source></jta-data-source>
+
+        <!-- 厂商专有属性(可选) -->
+        <properties>
+            <!--自动输出schema创建DDL语句 -->
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

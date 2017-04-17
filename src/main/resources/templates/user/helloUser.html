@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Hello World!</title>
+        <link rel="stylesheet" th:href="@{/css/index.css}" href="../../static/css/index.css">
+    </head>
+    <body>
+    <div th:replace="fragments/header :: head">alert</div>
+        <div class="father">
+            <h1 th:inline="text">您好， [[${#httpServletRequest.remoteUser}]]!</h1>
+            <p th:text="${#httpServletRequest.remoteUser}"></p>
+            <p><a th:href="@{/admin}">前往管理员界面</a></p>
+            <p><a th:href="@{/user/questions}">全部试题</a></p>
+            <p><a th:href="@{/user/test}">随机试题</a></p>
+
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="登出"/>
+            </form>
+
+            <div class="logo-container">
+                <div class="logo-left">
+                    <i class="logo-modal">
+                        <img th:src="@{/img/png/cweb_2d70d0b.png}" height="84" width="55"/>
+                        <h4>HTML5开发</h4>
+                    </i>
+                </div>
+                <div class="logo-right">
+                    <div class="type-logo">
+                        <i class="logo-modal">
+                            <img th:src="@{/img/png/1_android_d6730f3.png}" height="55"  width="55"/>
+                            <h4>Android开发</h4>
+                        </i>
+                    </div>
+
+                    <div class="type-logo">
+                        <i class="logo-modal">
+                            <a th:href="@{/user/rand/1}"><img th:src="@{/img/png/8_java_89b7c2c.png}" height="55" width="55"/></a>
+                            <h4>JAVA语言</h4>
+                        </i>
+                    </div>
+
+                    <div class="type-logo">
+                        <i class="logo-modal">
+                            <img th:src="@{/img/png/2_iOS_5e77ff4.png}" height="55" width="55"/>
+                            <h4>IOS开发</h4>
+                        </i>
+                    </div>
+                    <div class="type-logo">
+                        <i class="logo-modal">
+                            <img th:src="@{/img/png/11_Python_d253c3e.png}" height="55" width="55"/>
+                            <h4>Python语言</h4>
+                        </i>
+                    </div>
+                </div>
+            </div>
+            <div class="more-type" >
+                <span id="moreType">更多分类 ></span>
+            </div>
+            <div class="hidden" id="moreContainer">
+                <div class="more-types">
+                    <div class="little-type">
+                        <h4>PHP语言</h4>
+                    </div>
+                    <div class="little-type">
+                        <h4>C语言</h4>
+                    </div>
+                    <div class="little-type">
+                        <h4>JAVA Script</h4>
+                    </div>
+                    <div class="little-type">
+                        <h4>Cocos2d-x</h4>
+                    </div>
+                    <div class="little-type">
+                        <h4>Node.JS</h4>
+                    </div>
+                    <div class="little-type">
+                        <h3>敬请期待</h3>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    <script>
+        document.querySelector('#moreType').onclick = function () {
+            if(document.querySelector('#moreContainer').className == 'hidden'){
+                document.querySelector('#moreContainer').className = 'show';
+            }else{
+                document.querySelector('#moreContainer').className = 'hidden';
+            }
+        }
+    </script>
+    </body>
+</html>
