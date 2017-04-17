@@ -3,6 +3,34 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Spring Security Example </title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css">
+
+    <style>
+        form{
+            width: 25%;
+            height: 250px;
+            margin: 100px auto;
+            padding: 20px;
+            border: 1px solid #d9d9d9;
+            border-radius: 3px
+        }
+        .formItem {
+            display: block;
+        }
+        .formItem span{
+            display: block;
+            line-height:40px;
+        }
+        .formItem input{
+            width: 100%;
+            height:30px;
+            border: 1px solid #d9d9d9;
+            border-radius: 3px;
+        }
+        .formItem button{
+            width: 100%!important;
+        }
+    </style>
 </head>
 <body>
 <div th:if="${param.error}">
@@ -12,9 +40,9 @@
     您已经登出
 </div>
 <form th:action="@{/login}" method="post">
-    <div><label> 用户名 : <input type="text" name="username"/> </label></div>
-    <div><label> 密码: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="登录"/></div>
+    <div class="formItem"><span>用户名 :</span> <input type="text" name="username"/></div>
+    <div class="formItem"> <span> 密码: </span><input type="password" name="password"/></div>
+    <div class="formItem"><button type="submit" class="btn btn-warning">登录</button> </div>
 </form>
 </body>
 </html>
