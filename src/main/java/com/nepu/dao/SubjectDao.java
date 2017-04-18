@@ -21,8 +21,9 @@ public interface SubjectDao extends BaseDao<Subject,Integer>{
             "s.cItem like %?1% or s.dItem like %?1%" )
     List<Subject> searchQuestion(String searchString);
 
-//    @Query(value = "select top5 from Subject s where s.typeId = :typeId")
-//    List<Subject> getRandomSub(String typeId);
+    //@Query(value = "select s from Subject s where s.typeId = :typeId  order by rand() limit 5")
+    //List<Subject> getRandomSub(String typeId);
 
     List<Subject> findFirst5ByTypeId(String typeId);
+
 }

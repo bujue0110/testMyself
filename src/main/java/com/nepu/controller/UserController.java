@@ -1,9 +1,6 @@
 package com.nepu.controller;
 
-import com.nepu.dao.FavoriteDao;
-import com.nepu.dao.PaperDao;
-import com.nepu.dao.SubjectDao;
-import com.nepu.dao.UserDao;
+import com.nepu.dao.*;
 import com.nepu.entity.Favorite;
 import com.nepu.entity.Paper;
 import com.nepu.entity.Subject;
@@ -33,6 +30,8 @@ public class UserController {
     UserDao userDao;
     @Autowired
     FavoriteDao favoriteDao;
+    @Autowired
+    SubjectDaoImpl subjectDaoImpl;
 
     //获取试题列表
     @GetMapping(value = "/questions")
@@ -128,7 +127,7 @@ public class UserController {
     @GetMapping(value = "/rand/{typeId}")
     public String getRandomSub(@PathVariable("typeId") String typeId,Model model){
         ArrayList<Subject> subjects = new ArrayList<Subject>();
-        subjects = (ArrayList<Subject>) subjectDao.findFirst5ByTypeId(typeId);
+        subjects = (ArrayList<Subject>) subjectDaoImpl.getRandomSub(typeId);
         model.addAttribute("subjects",subjects);
         return "user/questions";
     }

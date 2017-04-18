@@ -5,10 +5,7 @@ import com.nepu.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -18,6 +15,12 @@ import javax.annotation.Resource;
 
 @Controller
 public class HomeController {
+
+    /* 页面跳转主要用于错误页面 */
+    @RequestMapping(value = "{page}", method = RequestMethod.GET)
+    public String toPage(@PathVariable("page") String page) {
+        return page;
+    }
 
     @RequestMapping(value = {"", "/home"}, method= RequestMethod.GET)
     public String home(){

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd" >
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>抱歉，您访问的页面没找到</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -39,8 +40,8 @@
     </script>
 </head>
 <body>
-<div class="ErrorContent" style="width:1000px;margin:auto;text-align:center;position:relative;">
-    <img src="../static/img/error.gif">
+<div class="ErrorContent" style="width:1000px;margin:auto;text-align:center;position:relative;"><!-- th:src="@{/img/error.gif}"-->
+    <img src="./img/error.gif">
     <div id="Word">404 NO FOUND!</div>
     <div id="Time">00:00:00</div>
     <div id="Date">0000-00-00</div>
