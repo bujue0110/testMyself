@@ -70,14 +70,14 @@ public class UserController {
         return "user/question";
     }
 
-    //试卷搜索功能
-    @GetMapping(value = "/spapersearch/{searchString}")
-    public String searchPaper(@PathVariable("searchString")String searchString,Model model){
-        ArrayList<Paper> papers = new ArrayList<Paper>();
-        papers = (ArrayList<Paper>) paperDao.searchPaper(searchString);
-        model.addAttribute("papers",papers);
-        return "user/papers";
-    }
+//    //试卷搜索功能
+//    @GetMapping(value = "/papersearch/{searchString}")
+//    public String searchPaper(@PathVariable("searchString")String searchString,Model model){
+//        ArrayList<Paper> papers = new ArrayList<Paper>();
+//        papers = (ArrayList<Paper>) paperDao.searchPaper(searchString);
+//        model.addAttribute("papers",papers);
+//        return "user/papers";
+//    }
 
     //根据试卷编号获取试题列表
     @GetMapping(value = "/paperSub/{searchString}")
@@ -129,7 +129,7 @@ public class UserController {
         ArrayList<Subject> subjects = new ArrayList<Subject>();
         subjects = (ArrayList<Subject>) subjectDaoImpl.getRandomSub(typeId);
         model.addAttribute("subjects",subjects);
-        return "user/questions";
+        return "user/randtest";
     }
 }
 

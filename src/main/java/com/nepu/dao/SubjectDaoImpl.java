@@ -29,7 +29,13 @@ public class SubjectDaoImpl {
                 Subject subject = new Subject();
                 subject.setaItem(resultSet.getString("a_item"));
                 subject.setContent(resultSet.getString("content"));
-
+                subject.setbItem(resultSet.getString("b_item"));
+                subject.setcItem(resultSet.getString("c_item"));
+                subject.setdItem(resultSet.getString("d_item"));
+                subject.setSubjectId(Integer.parseInt(typeId));
+                subject.setAnalysis(resultSet.getString("analysis"));
+                subject.setAnswer(resultSet.getString("answer"));
+                subject.setSubjectId(resultSet.getInt("subject_id"));
                 subjects.add(subject);
             }
         });
