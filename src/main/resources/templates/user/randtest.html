@@ -65,10 +65,37 @@
 
     document.querySelector('#testSubmit').onclick = function (e) {
         var answers = document.querySelectorAll('.answer');
+
+        var map = new Array();
         for(var i = 0;i<answers.length;i++){
             answers[i].className = 'answer btn-group hidden';
-            console.log(answers[i].id,'-----------------',$(answers[i]).find(' input:radio:checked').val())
+            console.log(answers[i].id,'-----------------',$(answers[i]).find(' input:radio:checked').val());
+            var entry = answers[i].id+'@'+$(answers[i]).find(' input:radio:checked').val();
+            map.push(entry);
         }
+        debugger;
+
+
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/user/randSubmit?map=" + map,
+            dataType: "json",
+           // data:'map='+map,
+//            success: function(data){
+//                if(status == "success"){
+//                    var str = data.resultString;
+//                    alert(data.resultString);
+//                };
+//            },
+            success: function(data){
+                    alert(data.resultString);
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+
         var submits = document.querySelectorAll('.afterSubmit');
         for(var j = 0;j<submits.length;j++){
             submits[j].className = 'afterSubmit btn-group show';

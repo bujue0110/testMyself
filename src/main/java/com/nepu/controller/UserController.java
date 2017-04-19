@@ -5,14 +5,19 @@ import com.nepu.entity.Favorite;
 import com.nepu.entity.Paper;
 import com.nepu.entity.Subject;
 import com.nepu.entity.User;
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -130,6 +135,31 @@ public class UserController {
         subjects = (ArrayList<Subject>) subjectDaoImpl.getRandomSub(typeId);
         model.addAttribute("subjects",subjects);
         return "user/randtest";
+    }
+
+    //提交随机测试答案
+    @PostMapping(value = "/randSubmit")
+    public @ResponseBody Map<String, Object> randSubmit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String map = request.getParameter("map");
+        System.out.print(map);
+        String[] entrys = map.split(",");
+        StringBuilder sb = new StringBuilder();
+        for(int i=1;i<+entrys.length+1;i++){
+            String[] id_answer=entrys[i-1].split("@");
+            String id = id_answer[0].substring(6);
+            String answer = id_answer[1];
+            String rightAnswer = subjectDao.findBySubjectId(Integer.parseInt(id)).getAnswer();
+            if(!answer.equals(rightAnswer)){
+                sb.append("第"+i+"题错误  ");
+            }
+        }
+        String s = sb.toString();
+        // 返回结果串
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("status", "success");
+        resultMap.put("resultString", sb.toString());
+        System.out.print(resultMap.get("resultString"));
+        return resultMap;
     }
 }
 

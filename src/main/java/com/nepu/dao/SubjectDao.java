@@ -26,4 +26,6 @@ public interface SubjectDao extends BaseDao<Subject,Integer>{
 
     List<Subject> findFirst5ByTypeId(String typeId);
 
+    Subject findBySubjectId(Integer subjectId);
+
 }
