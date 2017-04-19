@@ -7,7 +7,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Created by Administrator on 2017/3/15.
@@ -15,6 +18,8 @@ import javax.annotation.Resource;
 
 @Controller
 public class HomeController {
+    @Autowired
+    UserDao userDao;
 
     /* 页面跳转主要用于错误页面 */
     @RequestMapping(value = "{page}", method = RequestMethod.GET)
@@ -42,6 +47,26 @@ public class HomeController {
     @RequestMapping(value = "/login", method=RequestMethod.GET)
     public String login(){
         return "login";
+    }
+
+    @PostMapping(value = "/register")
+    public @ResponseBody Map<String, Object> register(HttpServletRequest request){
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        Map<String, Object> resultMap = new HashMap<>();
+        User regUser = userDao.findByUsername(username);
+
+        if (regUser != null){
+            resultMap.put("returnString","用户名被占用");
+        }else {
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setRole("ROLE_USER");
+            userDao.save(user);
+            resultMap.put("returnString","注册成功");
+        }
+        return resultMap;
     }
 
 }

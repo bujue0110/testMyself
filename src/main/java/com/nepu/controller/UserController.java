@@ -1,23 +1,15 @@
 package com.nepu.controller;
 
 import com.nepu.dao.*;
-import com.nepu.entity.Favorite;
-import com.nepu.entity.Paper;
-import com.nepu.entity.Subject;
-import com.nepu.entity.User;
-import net.minidev.json.JSONArray;
+import com.nepu.entity.*;
+import com.nepu.entity.PrimaryKey.AnswerPK;
+import com.nepu.entity.PrimaryKey.FavPK;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -37,6 +29,8 @@ public class UserController {
     FavoriteDao favoriteDao;
     @Autowired
     SubjectDaoImpl subjectDaoImpl;
+    @Autowired
+    AnswerDao answerDao;
 
     //获取试题列表
     @GetMapping(value = "/questions")
@@ -110,23 +104,25 @@ public class UserController {
 
     //添加收藏
     @PostMapping(value = "/addFav")
-    public Model addFav(HttpServletRequest request,Subject subject,Model model){
-        String message = "";
+    public @ResponseBody Map<String, Object> addFav(HttpServletRequest request){
+        String subjectIdString = request.getParameter("subjectData");
+        Integer subjectId = Integer.parseInt(subjectIdString);
+        Map<String, Object> resultMap = new HashMap<>();
         User user = userDao.findByUsername(request.getRemoteUser());
-        Favorite favoriteData = favoriteDao.findByUserIdAndSubjectId(user.getUserid(),subject.getSubjectId());
-        if (favoriteData.getId().getUserid() == user.getUserid() && favoriteData.getId().getSubjectId() == subject.getSubjectId()){
-            message = "已经收藏过了！";
-            model.addAttribute(message);
+        Favorite favoriteData = favoriteDao.findByUserIdAndSubjectId(user.getUserid(),subjectId);
+        if(favoriteData!=null){
+            resultMap.put("resultString","已经收藏过了！");
         }else {
             Favorite favorite = new Favorite();
-            favorite.getId().setUserid(user.getUserid());
-            favorite.getId().setSubjectId(subject.getSubjectId());
+            FavPK favPK = new FavPK();
+            favPK.setSubjectId(subjectId);
+            favPK.setUserid(user.getUserid());
+            favorite.setId(favPK);
             favorite.setTimestamp(new Timestamp(new Date().getTime()));
             favoriteDao.save(favorite);
-            message = "收藏成功！";
-            model.addAttribute(message);
+            resultMap.put("resultString","收藏成功！");
         }
-        return model;
+        return resultMap;
     }
 
     @GetMapping(value = "/rand/{typeId}")
@@ -139,9 +135,8 @@ public class UserController {
 
     //提交随机测试答案
     @PostMapping(value = "/randSubmit")
-    public @ResponseBody Map<String, Object> randSubmit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public @ResponseBody Map<String, Object> randSubmit(HttpServletRequest request) throws IOException {
         String map = request.getParameter("map");
-        System.out.print(map);
         String[] entrys = map.split(",");
         StringBuilder sb = new StringBuilder();
         for(int i=1;i<+entrys.length+1;i++){
@@ -161,5 +156,49 @@ public class UserController {
         System.out.print(resultMap.get("resultString"));
         return resultMap;
     }
+
+    //修改个人信息
+    @PostMapping(value = "/updateInfo")
+    public @ResponseBody Map<String, Object> updateInfo(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        String company = request.getParameter("company");
+        String school = request.getParameter("school");
+        String interest = request.getParameter("interest");
+        Integer age = Integer.parseInt(request.getParameter("age"));
+        User user = userDao.findByUsername(request.getRemoteUser());
+        Integer id = user.getUserid();
+        int result = userDao.updateInfo(company,school,interest,age,id);
+        if(result == 1){
+            resultMap.put("resultString","修改成功");
+        }else {
+            resultMap.put("resultString","修改失败");
+        }
+        return resultMap;
+    }
+    //提交对于某套试卷的答案
+    @PostMapping(value = "/paperSubmit")
+    public @ResponseBody Map<String, Object>paperSubmit(HttpServletRequest request){
+        String map = request.getParameter("map");
+        String[] entrys = map.split(",");
+        StringBuilder sb = new StringBuilder();
+        for(int i=1;i<+entrys.length+1;i++){
+            String[] id_answer=entrys[i-1].split("@");
+           // String id = id_answer[0].substring(6);
+            String answer = id_answer[1];
+            String answerString = "第"+i+"题:"+answer+";";
+            sb.append(answerString);
+        }
+        Answer answer = new Answer();
+        AnswerPK answerPK = new AnswerPK();
+        answerPK.setPaperId(Integer.parseInt(request.getParameter("paperId")));
+        answerPK.setUserid(userDao.findByUsername(request.getRemoteUser()).getUserid());
+        answer.setId(answerPK);
+        answer.setStudentAnswer(sb.toString());
+        answerDao.save(answer);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("resultString","提交成功");
+        return resultMap;
+    }
+
 }
 

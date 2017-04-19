@@ -11,8 +11,6 @@
     <title>试题</title>
 </head>
 <body>
-<!--<iframe class="iframe-head" th:src="@{/header.html}" src="/header.html"></iframe>-->
-
 <div th:replace="fragments/header :: head">alert</div>
 
     <ul class="questions-ul" >
@@ -24,7 +22,7 @@
             <div class="row indent" th:text="C．+${subject.cItem}">C．（2，2）</div>
             <div class="row indent" th:text="D．+${subject.dItem}">D．（-2，2）</div>
             <div class="btn-group">
-                <a class="btn-fav" th:href="@{/user/addFav}">添加到收藏</a>
+                <button class="btn-fav" th:value="${subject.subjectId}" onclick="addFav(this)">添加到收藏</button>
                 <button class="btn-answer">查看解析</button>
             </div>
         </li>
@@ -34,9 +32,24 @@
 <script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
 <script th:src="@{/js/wangEditor.min.js}" type="text/javascript" src="../../static/js/wangEditor.min.js"></script>
 <script type="text/javascript">
-    function onSearch(){
-        alert('点击搜索');
+    function addFav(subjectId){
+
+        debugger;
+        var subjectData = subjectId.value;
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/user/addFav?subjectData=" + subjectData,
+            dataType: "json",
+            success: function(data){
+                alert(data.resultString);
+            },
+            error: function() {
+                alert("error");
+            }
+        });
     }
+
 </script>
 </body>
 </html>
