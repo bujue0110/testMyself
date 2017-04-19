@@ -21,7 +21,7 @@
             <div class="row indent" th:text="B．+${subject.bItem}">B．（3，1）</div>
             <div class="row indent" th:text="C．+${subject.cItem}">C．（2，2）</div>
             <div class="row indent" th:text="D．+${subject.dItem}">D．（-2，2）</div>
-            <div class="btn-group">
+            <div class="btn-group lookanswers">
                 <button class="btn-fav" th:value="${subject.subjectId}" onclick="addFav(this)">添加到收藏</button>
                 <button class="btn-answer">查看解析</button>
             </div>

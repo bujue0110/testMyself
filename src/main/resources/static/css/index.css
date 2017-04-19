@@ -22,6 +22,10 @@
 .navbar-form{
     line-height: 48px;
 }
+.navbar .userName{
+    height: 42px;
+    margin: 10px;
+}
 .login,.register{
     border: 1px solid #EA6F5A;
     border-radius: 5px;
@@ -42,6 +46,9 @@
     margin: 80px auto;
     padding:50px 40px;
 }
+.questions-ul .submitBtn{
+    text-align: right;
+}
 .questions-li{
     list-style: decimal;
     list-style-position: inside;
@@ -52,6 +59,10 @@
 }
 .questions-li:last-of-type{
     border-bottom: none;
+}
+.questions-li .answergroups{
+    height: 30px;
+    padding-left: 70%;
 }
 .select-answer{
     float: right;

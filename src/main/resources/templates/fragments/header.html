@@ -28,14 +28,11 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
 
-
-
-
                 <li>
                     <a href="/login" class="register" th:unless="${#httpServletRequest.remoteUser != null}">登录</a>
                     <!-- Single button -->
                     <div class="btn-group" th:if="${#httpServletRequest.remoteUser != null}">
-                        <button type="button" th:text="${#httpServletRequest.remoteUser}" class="btn btn-default dropdown-toggle register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" th:text="${#httpServletRequest.remoteUser}" class="btn btn-default dropdown-toggle register userName" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">

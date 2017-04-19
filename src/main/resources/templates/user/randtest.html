@@ -24,7 +24,7 @@
         <div class="row indent" th:text="D．+${subject.dItem}">D．（-2，2）</div>
 
 
-        <div class="btn-group answer" th:id="answer+${subject.subjectId}" data-toggle="buttons">
+        <div class="btn-group answer answergroups" th:id="answer+${subject.subjectId}" data-toggle="buttons">
             <label class="btn btn-default">
                 <input type="radio" class="toggle" value="A"> A
             </label>
@@ -52,7 +52,7 @@
         </div>
     </li>
     <span class="ul-line"></span>
-    <div><button id="testSubmit" type="button" class="btn btn-success">提交</button></div>
+    <div><button id="testSubmit" type="button" class="btn btn-success submitBtn">提交</button></div>
 </ul>
 
 <script th:src="@{/js/jquery.min.js}" src="../../static/js/jquery.min.js"></script>
