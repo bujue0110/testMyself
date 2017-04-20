@@ -5,6 +5,8 @@ import com.nepu.entity.*;
 import com.nepu.entity.PrimaryKey.AnswerPK;
 import com.nepu.entity.PrimaryKey.FavPK;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,32 @@ public class UserController {
     SubjectDaoImpl subjectDaoImpl;
     @Autowired
     AnswerDao answerDao;
+
+    //获取试题列表带分页
+    @GetMapping(value = "/questionsPage")
+    public String getQuestionsPage(HttpServletRequest request,Model model){
+        String pageNumberStr = request.getParameter("pageNumber");
+        if (pageNumberStr == null || "".equals(pageNumberStr)){
+            pageNumberStr = "1";
+        }
+        int pageNumber = Integer.parseInt(pageNumberStr);
+        int pageSize = 5;
+        Page<Subject> subjects = this.getAllSubjects(pageNumber,pageSize);
+        model.addAttribute("subjects",subjects);
+        model.addAttribute("totalPageNumber",subjects.getTotalElements());
+        model.addAttribute("pageSize",pageSize);
+        return "/user/questionsPage";
+    }
+    //分页
+    public Page<Subject> getAllSubjects(int pageNumber, int pageSize){
+        PageRequest request = this.buildPageRequest(pageNumber,pageSize);
+        Page<Subject> sourceCodes= this.subjectDao.findAll(request);
+        return sourceCodes;
+    }
+    //构建PageRequest
+    private PageRequest buildPageRequest(int pageNumber, int pagzSize) {
+        return new PageRequest(pageNumber - 1, pagzSize, null);
+    }
 
     //获取试题列表
     @GetMapping(value = "/questions")
@@ -64,8 +92,13 @@ public class UserController {
     @GetMapping(value = "/subjectsearch/{searchString}")
     public String searchQuestion(@PathVariable("searchString")String searchString,Model model){
         ArrayList<Subject> subjects = new ArrayList<Subject>();
-        subjects = (ArrayList<Subject>) subjectDao.searchQuestion(searchString);
-        model.addAttribute("subjects",subjects);
+        if(searchString == null||searchString.equals("")){
+            subjects = (ArrayList<Subject>) subjectDao.findAll();
+            model.addAttribute("subjects",subjects);
+        }else {
+            subjects = (ArrayList<Subject>) subjectDao.searchQuestion(searchString);
+            model.addAttribute("subjects",subjects);
+        }
         return "user/question";
     }
 

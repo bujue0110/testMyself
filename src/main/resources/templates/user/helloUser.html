@@ -9,11 +9,9 @@
     <div th:replace="fragments/header :: head">alert</div>
         <div class="father">
             <h1 th:inline="text">您好， [[${#httpServletRequest.remoteUser}]]!</h1>
-            <p th:text="${#httpServletRequest.remoteUser}"></p>
             <p><a th:href="@{/admin}">前往管理员界面</a></p>
             <p><a th:href="@{/user/questions}">全部试题</a></p>
-            <p><a th:href="@{/user/test}">随机试题</a></p>
-
+            <p><a th:href="@{/user/questionsPage}">全部试题分页</a></p>
             <form th:action="@{/logout}" method="post">
                 <input type="submit" value="登出"/>
             </form>
