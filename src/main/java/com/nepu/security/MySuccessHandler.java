@@ -52,7 +52,9 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         if (isAdmin(roles)) {
             url = "/admin";
-        } else if (isUser(roles)) {
+        } else if(isTeacher(roles)) {
+            url = "teacher";
+        }else if (isUser(roles)) {
             url = "/user";
         } else {
             url = "/accessDenied";
@@ -63,6 +65,13 @@ public class MySuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private boolean isUser(List<String> roles) {
         if (roles.contains("ROLE_USER")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isTeacher(List<String> roles) {
+        if (roles.contains("ROLE_TEACHER")) {
             return true;
         }
         return false;

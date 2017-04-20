@@ -1,0 +1,69 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/index.css}" href="../../static/css/index.css">
+    <link rel="stylesheet" th:href="@{/css/wangEditor.min.css}" type="text/css" href="../../static/css/wangEditor.min.css">
+
+    <title>试题</title>
+</head>
+<body>
+<div th:replace="fragments/header :: head">alert</div>
+
+<ul class="questions-ul" >
+    <span class="ul-line"></span>
+    <li class = "questions-li" th:each="subject : ${subjects}">
+        <span th:text="${subject.content}"></span>
+        <div class="row indent" th:text="A．+${subject.aItem}">A．（3，2）</div>
+        <div class="row indent" th:text="B．+${subject.bItem}">B．（3，1）</div>
+        <div class="row indent" th:text="C．+${subject.cItem}">C．（2，2）</div>
+        <div class="row indent" th:text="D．+${subject.dItem}">D．（-2，2）</div>
+        <div th:id="answerlook+${subject.subjectId}" class="hidden">
+            <div th:text="正确答案：+${subject.answer}"></div>
+            <div th:text="解析：+${subject.analysis}"></div>
+        </div>
+        <div class="btn-group lookanswers">
+            <button class="btn-fav" th:value="${subject.subjectId}" onclick="deleteFav(this)">从收藏移除</button>
+            <button class="btn-answer" th:id="look+${subject.subjectId}" onclick="answerLook(this)">查看解析</button>
+        </div>
+    </li>
+    <span class="ul-line"></span>
+</ul>
+<script th:src="@{/js/jquery.min.js}" src="../../static/js/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
+<script th:src="@{/js/wangEditor.min.js}" type="text/javascript" src="../../static/js/wangEditor.min.js"></script>
+<script type="text/javascript">
+    function answerLook(e) {
+        if(document.querySelector('#answer'+e.id).className == 'hidden'){
+            document.querySelector('#answer'+e.id).className = 'show';
+            document.querySelector('#'+e.id).innerText = '收起解析';
+        }else{
+            document.querySelector('#answer'+e.id).className = 'hidden';
+            document.querySelector('#'+e.id).innerText = '查看解析';
+        }
+    }
+    function deleteFav(subjectId){
+
+        debugger;
+        var subjectData = subjectId.value;
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/user/deleteFav?subjectData=" + subjectData,
+            dataType: "json",
+            success: function(data){
+                alert(data.resultString);
+                window.location.href = '/user/queryFav';
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

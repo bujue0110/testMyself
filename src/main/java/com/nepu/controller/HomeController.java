@@ -38,6 +38,10 @@ public class HomeController {
         return "admin/helloAdmin";
     }
 
+    @GetMapping(value = "/teacher")
+    @PreAuthorize("hasRole('TEACHER')")
+    public String helloTeacher(){ return "teacher/addSubject";}
+
     @GetMapping(value = "/user")
     @PreAuthorize("hasRole('USER')")
     public String helloUser(){

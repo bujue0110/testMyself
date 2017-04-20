@@ -158,6 +158,39 @@ public class UserController {
         return resultMap;
     }
 
+    //查看收藏
+    @GetMapping(value = "/queryFav")
+    public String queryFav(HttpServletRequest request,Model model){
+        Integer userId = userDao.findByUsername(request.getRemoteUser()).getUserid();
+        ArrayList<Favorite> favoriteList = (ArrayList<Favorite>) favoriteDao.findById_Userid(userId);
+        List<Subject> subjects = new ArrayList<>();
+        if(favoriteList != null && favoriteList.size() != 0){
+            for (int i = 0;i <= favoriteList.size();i++) {
+                Subject subject = subjectDao.findBySubjectId(favoriteList.get(i).getId().getSubjectId());
+                subjects.add(subject);
+            }
+        }else {
+            model.addAttribute("message","您还没有任何收藏！");
+        }
+        model.addAttribute("subjects",subjects);
+        return "/user/queryFav";
+    }
+
+    //删除收藏
+    @PostMapping(value = "/deleteFav")
+    public @ResponseBody Map<String, Object> deleteFav(HttpServletRequest request){
+        Integer userId = userDao.findByUsername(request.getRemoteUser()).getUserid();
+        Integer subjectId = Integer.parseInt(request.getParameter("subjectData"));
+        FavPK favPK = new FavPK();
+        favPK.setUserid(userId);
+        favPK.setSubjectId(subjectId);
+        favoriteDao.delete(favPK);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("resultString","删除成功！");
+        return resultMap;
+    }
+
+    //进行分类随机测试
     @GetMapping(value = "/rand/{typeId}")
     public String getRandomSub(@PathVariable("typeId") String typeId,Model model){
         ArrayList<Subject> subjects = new ArrayList<Subject>();

@@ -38,9 +38,9 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">bbb</a></li>
                             <li><a href="#">我的资料</a></li>
-                            <li><a href="#">我的收藏</a></li>
+                            <li><a href="/user/queryFav">我的收藏</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">退出登录</a></li>
+                            <li><a th:href="@{/logout}" th:method="post">退出登录</a></li>
                         </ul>
                     </div>
 
