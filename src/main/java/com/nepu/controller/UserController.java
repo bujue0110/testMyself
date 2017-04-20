@@ -165,7 +165,7 @@ public class UserController {
         ArrayList<Favorite> favoriteList = (ArrayList<Favorite>) favoriteDao.findById_Userid(userId);
         List<Subject> subjects = new ArrayList<>();
         if(favoriteList != null && favoriteList.size() != 0){
-            for (int i = 0;i <= favoriteList.size();i++) {
+            for (int i = 0;i <= favoriteList.size()-1;i++) {
                 Subject subject = subjectDao.findBySubjectId(favoriteList.get(i).getId().getSubjectId());
                 subjects.add(subject);
             }
@@ -221,6 +221,14 @@ public class UserController {
         resultMap.put("resultString", sb.toString());
         System.out.print(resultMap.get("resultString"));
         return resultMap;
+    }
+
+    //查询个人信息
+    @GetMapping(value = "/queryInfo")
+    public String queryInfo(HttpServletRequest request,Model model){
+        User user = userDao.findByUsername(request.getRemoteUser());
+        model.addAttribute("userInfo",user);
+        return "/user/queryInfo";
     }
 
     //修改个人信息
