@@ -11,9 +11,8 @@
     <title>试题</title>
 </head>
 <body>
-
-<div th:replace="fragments/header :: head">alert</div>
-
+<!--<div th:replace="fragments/header :: head">alert</div>-->
+<!--改成显示试题编号，分页位置、颜色调整-->
 <ul class="questions-ul" >
     <span class="ul-line"></span>
     <li class = "questions-li" th:each="subject : ${subjects}">
@@ -22,80 +21,40 @@
         <div class="row indent" th:text="B．+${subject.bItem}">B．（3，1）</div>
         <div class="row indent" th:text="C．+${subject.cItem}">C．（2，2）</div>
         <div class="row indent" th:text="D．+${subject.dItem}">D．（-2，2）</div>
-
-
-        <div class="btn-group answer answergroups" th:id="answer+${subject.subjectId}" data-toggle="buttons">
-            <label class="btn btn-default">
-                <input type="radio" class="toggle" value="A"> A
-            </label>
-            <label class="btn btn-default">
-                <input type="radio" class="toggle" value="B"> B
-            </label>
-            <label class="btn btn-default">
-                <input type="radio" class="toggle" value="C"> C
-            </label>
-            <label class="btn btn-default">
-                <input type="radio" class="toggle" value="D"> D
-            </label>
-        </div>
-
-
         <div th:id="answerlook+${subject.subjectId}" class="hidden">
             <div th:text="正确答案：+${subject.answer}"></div>
             <div th:text="解析：+${subject.analysis}"></div>
         </div>
-
-
-        <div id="afterSubmit" class="afterSubmit btn-group hidden">
+        <div class="btn-group lookanswers">
             <button class="btn-fav" th:value="${subject.subjectId}" onclick="addFav(this)">添加到收藏</button>
             <button class="btn-answer" th:id="look+${subject.subjectId}" onclick="answerLook(this)">查看解析</button>
         </div>
     </li>
     <span class="ul-line"></span>
-    <div><button id="testSubmit" type="button" class="btn btn-success submitBtn">提交</button></div>
+    <div th:text="${s}">
 </ul>
+<!-- 列表分页的DIV,由JS动态填充内容-->
+<ul class="pagination pagination-lg" id="link">
+
+</ul><br>
 
 <script th:src="@{/js/jquery.min.js}" src="../../static/js/jquery.min.js"></script>
 <script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
+<script th:src="@{/js/wangEditor.min.js}" type="text/javascript" src="../../static/js/wangEditor.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
-    function onSearch(){
-        alert('点击搜索');
-    }
-
-    document.querySelector('#testSubmit').onclick = function (e) {
-        var answers = document.querySelectorAll('.answer');
-
-        var map = new Array();
-        for(var i = 0;i<answers.length;i++){
-            answers[i].className = 'answer btn-group hidden';
-            console.log(answers[i].id,'-----------------',$(answers[i]).find(' input:radio:checked').val());
-            var entry = answers[i].id+'@'+$(answers[i]).find(' input:radio:checked').val();
-            map.push(entry);
+    $(document).ready(function(){
+        var typeId = Number([[${typeId}]]);
+        var totalNumber = Number([[${totalPageNumber}]]);
+        var pageSize = Number([[${pageSize}]]);
+        var pageCount = totalNumber/pageSize;
+        var html = "";
+        for(var i = 0;i<pageCount;i++){
+            var link_Url = "<li><a href=\""+typeId+"?pageNumber="+(i+1)+"\">"+(i+1)+"</a></li>";
+            html += link_Url;
         }
-        debugger;
-
-
-        $.ajax({
-            //获取URL
-            type: "POST",
-            url:"/user/randSubmit?map=" + map,
-            dataType: "json",
-            success: function(data){
-                    alert(data.resultString);
-            },
-            error: function() {
-                alert("error");
-            }
-        });
-
-        var submits = document.querySelectorAll('.afterSubmit');
-        for(var j = 0;j<submits.length;j++){
-            submits[j].className = 'afterSubmit btn-group show';
-        }
-
-    }
-
-
+        var fenyeDiv = document.getElementById("link");
+        fenyeDiv.innerHTML=html;
+    });
 
     function answerLook(e) {
         if(document.querySelector('#answer'+e.id).className == 'hidden'){
@@ -123,6 +82,7 @@
             }
         });
     }
+
 </script>
 </body>
 </html>

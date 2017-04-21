@@ -6,23 +6,74 @@
 
     <title>Hello World!</title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/simditor/simditor.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/simditor/simditor.css}"/>
 </head>
 <body>
-
+<a th:href="@{/teacher/questions/1}">111</a>
+<div>
+    <button type="button" class="btn btn-default btn-lg disabled" id="select">选择题</button>
+    <button type="button" class="btn btn-default btn-lg " id="fill">填空题</button>
+</div>
 <textarea id="editor" placeholder="Balabala" autofocus></textarea>
+    <form class="bs-example bs-example-form" role="form">
+        <div class="input-group">
+            <span class="input-group-addon">试题内容</span>
+            <textarea id="editor" placeholder="Balabala" autofocus></textarea>
+            <!--<input type="text" class="form-control" placeholder="twitterhandle">-->
+        </div>
+        <br>
+        <div class="input-group select">
+            <span class="input-group-addon">选项A</span>
+            <input type="text" class="form-control">
+        </div>
+        <br>
+        <div class="input-group select">
+            <span class="input-group-addon">选项B</span>
+            <input type="text" class="form-control">
+        </div>
+        <br>
+        <div class="input-group select">
+            <span class="input-group-addon">选项C</span>
+            <input type="text" class="form-control">
+        </div>
+        <br>
+        <div class="input-group select">
+            <span class="input-group-addon">选项D</span>
+            <input type="text" class="form-control">
+        </div>
+        <br>
+        <div class="input-group">
+            <span class="input-group-addon">正确答案</span>
+            <input type="text" class="form-control">
+        </div>
+        <br>
+        <div class="input-group">
+            <span class="input-group-addon">解析</span>
+            <input type="text" class="form-control">
+        </div>
+        <br>
+    </form>
 
 <script type="text/javascript" th:src="@{js/simditor/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{js/simditor/module.js}"></script>
 <script type="text/javascript" th:src="@{js/simditor/hotkeys.js}"></script>
 <script type="text/javascript" th:src="@{js/simditor/uploader.js}"></script>
 <script type="text/javascript" th:src="@{js/simditor/simditor.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
+
     var editor = new Simditor({
         textarea: $('#editor')
         //optional options
     });
+
+    document.querySelector('.fill').onclick = function () {
+        document.querySelector('.fill').className = 'btn btn-default btn-lg disabled';
+        document.querySelector('.select').className = 'btn btn-default btn-lg';
+        document.querySelector('#input-group select').className = 'hidden';
+    }
 </script>
 
 </body>
