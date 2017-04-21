@@ -72,7 +72,7 @@
         $.ajax({
             //获取URL
             type: "POST",
-            url:"/user/addFav?subjectData=" + subjectData,
+            url:"/teacher/addSubjectToPaper?subjectData=" + subjectData,
             dataType: "json",
             success: function(data){
                 alert(data.resultString);
