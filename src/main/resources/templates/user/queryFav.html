@@ -16,7 +16,7 @@
 <ul class="questions-ul" >
     <span class="ul-line"></span>
     <li class = "questions-li" th:each="subject : ${subjects}">
-        <span th:text="${subject.content}"></span>
+        <span th:value="${subject.content}" class="contentSpan"></span>
         <div class="row indent" th:text="A．+${subject.aItem}">A．（3，2）</div>
         <div class="row indent" th:text="B．+${subject.bItem}">B．（3，1）</div>
         <div class="row indent" th:text="C．+${subject.cItem}">C．（2，2）</div>
@@ -36,6 +36,15 @@
 <script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
 <script th:src="@{/js/wangEditor.min.js}" type="text/javascript" src="../../static/js/wangEditor.min.js"></script>
 <script type="text/javascript">
+
+    $(window).load(function() {
+        $('.contentSpan').each(
+            function(index,el){
+                debugger
+                el.innerHTML = el.getAttribute('value');
+            }
+        )
+    });
     function answerLook(e) {
         if(document.querySelector('#answer'+e.id).className == 'hidden'){
             document.querySelector('#answer'+e.id).className = 'show';

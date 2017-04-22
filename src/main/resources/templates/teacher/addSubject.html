@@ -5,61 +5,71 @@
 <head>
 
     <title>Hello World!</title>
-
+    <link rel="stylesheet" th:href="@{/css/index.css}" href="../../static/css/index.css">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/simditor/simditor.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrapValidtor.css}">
 </head>
 <body>
-<a th:href="@{/teacher/questions/1}">111</a>
-<div>
-    <button type="button" class="btn btn-default btn-lg disabled" id="select">选择题</button>
-    <button type="button" class="btn btn-default btn-lg " id="fill">填空题</button>
-</div>
-<textarea id="editor" placeholder="Balabala" autofocus></textarea>
-    <form class="bs-example bs-example-form" role="form">
-        <div class="input-group">
-            <span class="input-group-addon">试题内容</span>
-            <textarea id="editor" placeholder="Balabala" autofocus></textarea>
-            <!--<input type="text" class="form-control" placeholder="twitterhandle">-->
-        </div>
-        <br>
-        <div class="input-group select">
-            <span class="input-group-addon">选项A</span>
-            <input type="text" class="form-control">
-        </div>
-        <br>
-        <div class="input-group select">
-            <span class="input-group-addon">选项B</span>
-            <input type="text" class="form-control">
-        </div>
-        <br>
-        <div class="input-group select">
-            <span class="input-group-addon">选项C</span>
-            <input type="text" class="form-control">
-        </div>
-        <br>
-        <div class="input-group select">
-            <span class="input-group-addon">选项D</span>
-            <input type="text" class="form-control">
-        </div>
-        <br>
-        <div class="input-group">
-            <span class="input-group-addon">正确答案</span>
-            <input type="text" class="form-control">
-        </div>
-        <br>
-        <div class="input-group">
-            <span class="input-group-addon">解析</span>
-            <input type="text" class="form-control">
-        </div>
-        <br>
-    </form>
+    <div class="father">
 
-<script type="text/javascript" th:src="@{js/simditor/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{js/simditor/module.js}"></script>
-<script type="text/javascript" th:src="@{js/simditor/hotkeys.js}"></script>
-<script type="text/javascript" th:src="@{js/simditor/uploader.js}"></script>
-<script type="text/javascript" th:src="@{js/simditor/simditor.js}"></script>
+        <a th:href="@{/teacher/questions/1}">111</a>
+        <ul class="nav nav-pills">
+            <li role="presentation" class="active" id="select"><a href="#">选择题</a></li>
+            <li role="presentation" id="fill"><a href="#">填空题</a></li>
+        </ul>
+
+        <!--<textarea id="editor" placeholder="Balabala" autofocus></textarea>-->
+        <form class="bs-example bs-example-form" role="form" th:action="@{/teacher/addSubject}" method="post">
+            <div class="input-group">
+                <span class="input-group-addon">试题类别</span>
+                <select name="subjectType" class="form-control" >
+                    <span th:each="subjectType : ${subjectTypes}">
+                    <option name="subjectType" th:value="${subjectType.typeId}" th:text="${subjectType.typeName}">1</option>
+                    </span>
+            </select>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">试题内容</span>
+                <textarea id="editor" placeholder="请输入试题内容" autofocus name="content"></textarea>
+                <!--<input type="text" class="form-control" placeholder="twitterhandle">-->
+            </div>
+            <div class="input-group select">
+                <span class="input-group-addon">选项A</span>
+                <input type="text" class="form-control" name="aItem">
+            </div>
+            <div class="input-group select">
+                <span class="input-group-addon">选项B</span>
+                <input type="text" class="form-control" name="bItem">
+            </div>
+            <div class="input-group select">
+                <span class="input-group-addon">选项C</span>
+                <input type="text" class="form-control" name="cItem">
+            </div>
+            <div class="input-group select">
+                <span class="input-group-addon">选项D</span>
+                <input type="text" class="form-control" name="dItem">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">正确答案</span>
+                <input type="text" class="form-control" name="answer">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">解析</span>
+                <input type="text" class="form-control" name="analysis">
+            </div>
+            <div class="input-group">
+                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+<script type="text/javascript" th:src="@{/js/simditor/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/simditor/module.js}"></script>
+<script type="text/javascript" th:src="@{/js/simditor/hotkeys.js}"></script>
+<script type="text/javascript" th:src="@{/js/simditor/uploader.js}"></script>
+<script type="text/javascript" th:src="@{/js/simditor/simditor.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrapValidtor.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
@@ -69,11 +79,85 @@
         //optional options
     });
 
-    document.querySelector('.fill').onclick = function () {
-        document.querySelector('.fill').className = 'btn btn-default btn-lg disabled';
-        document.querySelector('.select').className = 'btn btn-default btn-lg';
-        document.querySelector('#input-group select').className = 'hidden';
-    }
+    document.querySelector('#fill').onclick = function () {
+        document.querySelector('#fill').className = 'active';
+        document.querySelector('#select').className = '';
+        var items = document.querySelectorAll('.select');
+        for (var i = 0;i<items.length;i++){
+            debugger
+            items[i].className = 'input-group select hidden';
+        }
+    };
+    document.querySelector('#select').onclick = function () {
+        document.querySelector('#select').className = 'active';
+        document.querySelector('#fill').className = '';
+        var items = document.querySelectorAll('.select');
+        for (var i = 0;i<items.length;i++){
+            items[i].className = 'input-group select';
+        }
+    };
+    $(function () {
+        $('form').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                content: {
+                    message: '请输入试题内容',
+                    validators: {
+                        notEmpty: {
+                            message: '试题内容不能为空'
+                        }
+                    }
+                },
+                aItem: {
+                    validators: {
+                        notEmpty: {
+                            message: '选项不能为空'
+                        }
+                    }
+                },
+                bItem: {
+                    validators: {
+                        notEmpty: {
+                            message: '选项不能为空'
+                        }
+                    }
+                },
+                cItem: {
+                    validators: {
+                        notEmpty: {
+                            message: '选项不能为空'
+                        }
+                    }
+                },
+                dItem: {
+                    validators: {
+                        notEmpty: {
+                            message: '选项不能为空'
+                        }
+                    }
+                },
+                answer: {
+                    validators: {
+                        notEmpty: {
+                            message: '答案不能为空'
+                        }
+                    }
+                },
+                analysis: {
+                    validators: {
+                        notEmpty: {
+                            message: '答案不能为空'
+                        }
+                    }
+                }
+            }
+        });
+    });
 </script>
 
 </body>

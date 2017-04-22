@@ -1,7 +1,9 @@
 package com.nepu.controller;
 
+import com.nepu.dao.PaperDao;
 import com.nepu.dao.SubjectDao;
 import com.nepu.dao.SubjectTypeDao;
+import com.nepu.entity.Paper;
 import com.nepu.entity.Subject;
 import com.nepu.entity.SubjectType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,8 @@ public class TeacherController {
     SubjectTypeDao subjectTypeDao;
     @Autowired
     SubjectDao subjectDao;
-
+    @Autowired
+    PaperDao paperDao;
 
     //添加试题
     @PostMapping(value = "/addSubject")
@@ -42,7 +45,7 @@ public class TeacherController {
             String dItem = request.getParameter("dItem");
             String answer = request.getParameter("answer");
             String analysis = request.getParameter("analysis");
-            Integer subjectType = Integer.parseInt(request.getParameter("subjectType"));
+            String subjectType = request.getParameter("subjectType");
             Subject subject = new Subject();
             subject.setContent(content);
             subject.setaItem(aItem);
@@ -51,7 +54,7 @@ public class TeacherController {
             subject.setdItem(dItem);
             subject.setAnswer(answer);
             subject.setAnalysis(analysis);
-            subject.setSubjectId(subjectType);
+            subject.setTypeId(subjectType);
             subjectDao.save(subject);
             resultMap.put("resultString","添加成功！");
         }catch (Exception e){
@@ -96,7 +99,7 @@ public class TeacherController {
     @PostMapping(value = "/addSubjectToPaper")
     public @ResponseBody Map<String, Object> addSubjectToPaper(HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
-        Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+        Integer subjectId = Integer.parseInt(request.getParameter("subjectData"));
         //List<String> subjectIds = new ArrayList<>();
         ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
         if (subjects == null){
@@ -116,14 +119,74 @@ public class TeacherController {
         return resultMap;
     }
 
+    //查看试题篮
     @GetMapping(value = "/queryCart")
-    public String queryCart(HttpServletRequest request){
+    public String queryCart(HttpServletRequest request,Model model){
         ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
+        List<Subject> subjectList = new ArrayList<>();
         if (subjects == null){
             //试题篮为空
+
         }else {
-            for (int i)
+            for (int i = 0;i<=subjects.size()-1;i++){
+                Subject subject = subjectDao.findBySubjectId(subjects.get(i));
+                subjectList.add(subject);
+            }
+            model.addAttribute("subjects",subjectList);
         }
         return "/teacher/cart";
+    }
+
+    //从试题篮移除试题
+    public @ResponseBody Map<String, Object> removeFromCart(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        try{
+            ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
+            String subjectId = request.getParameter("subjectId");
+            subjects.remove(subjectId);
+            request.getSession().setAttribute("subjects",subjects);
+            resultMap.put("resultString","移除成功！");
+        }catch (Exception e){
+            resultMap.put("resultString","移除失败！");
+        }
+        return resultMap;
+    }
+
+    //清空试题篮
+    public @ResponseBody Map<String, Object> clearCart(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
+            subjects.clear();
+            request.getSession().setAttribute("subjects",subjects);
+            resultMap.put("resultString","试题篮已经清空，为您跳转到主页！");
+        }catch (Exception e){
+            resultMap.put("resultString","清空成功！");
+        }
+        return resultMap;
+    }
+
+    //生成试卷
+    @PostMapping(value = "/createPaperByCart")
+    public @ResponseBody Map<String, Object> createPaperByCart(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        String paperName = request.getParameter("paperName");
+        ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
+        if (subjects == null){
+            resultMap.put("resultString","试题篮中还没有试题！");
+        }else {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0;i<=subjects.size()-1;i++){
+                sb.append(subjects.get(i));
+            }
+            Paper paper = new Paper();
+            paper.setPaperName(paperName);
+            paper.setSubjectList(sb.toString());
+            paperDao.save(paper);
+            subjects.clear();
+            request.getSession().setAttribute("subjects",subjects);
+            resultMap.put("resultString","试卷生成成功！");
+        }
+        return resultMap;
     }
 }

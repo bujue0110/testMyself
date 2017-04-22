@@ -13,10 +13,12 @@
 <body>
 <!--<div th:replace="fragments/header :: head">alert</div>-->
 <!--改成显示试题编号，分页位置、颜色调整-->
+<a th:href="@{/teacher/queryCart}">222222</a>
 <ul class="questions-ul" >
     <span class="ul-line"></span>
     <li class = "questions-li" th:each="subject : ${subjects}">
-        <span th:text="${subject.content}"></span>
+        <!--[[${subject.content}]]-->
+        <span th:value="${subject.content}" class="contentSpan"></span>
         <div class="row indent" th:text="A．+${subject.aItem}">A．（3，2）</div>
         <div class="row indent" th:text="B．+${subject.bItem}">B．（3，1）</div>
         <div class="row indent" th:text="C．+${subject.cItem}">C．（2，2）</div>
@@ -26,12 +28,12 @@
             <div th:text="解析：+${subject.analysis}"></div>
         </div>
         <div class="btn-group lookanswers">
-            <button class="btn-fav" th:value="${subject.subjectId}" onclick="addFav(this)">添加到收藏</button>
+            <button class="btn-fav" th:value="${subject.subjectId}" onclick="addFav(this)">添加到试题篮</button>
             <button class="btn-answer" th:id="look+${subject.subjectId}" onclick="answerLook(this)">查看解析</button>
         </div>
     </li>
     <span class="ul-line"></span>
-    <div th:text="${s}">
+
 </ul>
 <!-- 列表分页的DIV,由JS动态填充内容-->
 <ul class="pagination pagination-lg" id="link">
@@ -54,6 +56,15 @@
         }
         var fenyeDiv = document.getElementById("link");
         fenyeDiv.innerHTML=html;
+    });
+
+    $(window).load(function() {
+        $('.contentSpan').each(
+            function(index,el){
+                debugger
+                el.innerHTML = el.getAttribute('value');
+            }
+        )
     });
 
     function answerLook(e) {
