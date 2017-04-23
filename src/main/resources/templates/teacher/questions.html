@@ -61,7 +61,6 @@
     $(window).load(function() {
         $('.contentSpan').each(
             function(index,el){
-                debugger
                 el.innerHTML = el.getAttribute('value');
             }
         )
@@ -77,8 +76,6 @@
         }
     }
     function addFav(subjectId){
-
-        debugger;
         var subjectData = subjectId.value;
         $.ajax({
             //获取URL

@@ -114,14 +114,17 @@ public class UserController {
     //根据试卷编号获取试题列表
     @GetMapping(value = "/paperSub/{searchString}")
     public String getSubjectsByPaper(@PathVariable("searchString")String searchString,Model model){
-        Paper paper = paperDao.getSubjectByPaper(searchString);
+        Paper paper = paperDao.getSubjectByPaper(Integer.parseInt(searchString));
+        String paperName = paper.getPaperName();
         String subjectList = paper.getSubjectList();
         String[] subjectIds = subjectList.split(";");
         ArrayList<Subject> subjectArrayList = new ArrayList<Subject>();
-        for(int i=0;i<=subjectIds.length;i++){
+        for(int i=0;i<=subjectIds.length-1;i++){
             Subject subject = (Subject) subjectDao.getOne(Integer.parseInt(subjectIds[i]));
             subjectArrayList.add(subject);
         }
+        model.addAttribute("paperName",paperName);
+        model.addAttribute("paperId",searchString);
         model.addAttribute("subjects",subjectArrayList);
         return "user/paperSub";
     }
@@ -252,15 +255,22 @@ public class UserController {
     //提交对于某套试卷的答案
     @PostMapping(value = "/paperSubmit")
     public @ResponseBody Map<String, Object>paperSubmit(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
         String map = request.getParameter("map");
         String[] entrys = map.split(",");
         StringBuilder sb = new StringBuilder();
-        for(int i=1;i<+entrys.length+1;i++){
+        for(int i=1;i<=entrys.length;i++){
             String[] id_answer=entrys[i-1].split("@");
-           // String id = id_answer[0].substring(6);
-            String answer = id_answer[1];
-            String answerString = "第"+i+"题:"+answer+";";
-            sb.append(answerString);
+
+            if (id_answer.length==1){
+                resultMap.put("resultString","你还有未填写的试题！");
+                return resultMap;
+            }else {
+                String answer = id_answer[1];
+                String answerString = "第"+i+"题:"+answer+";";
+                sb.append(answerString);
+            }
+
         }
         Answer answer = new Answer();
         AnswerPK answerPK = new AnswerPK();
@@ -269,7 +279,7 @@ public class UserController {
         answer.setId(answerPK);
         answer.setStudentAnswer(sb.toString());
         answerDao.save(answer);
-        Map<String, Object> resultMap = new HashMap<>();
+
         resultMap.put("resultString","提交成功");
         return resultMap;
     }

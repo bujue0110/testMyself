@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/4/21.
@@ -138,12 +135,20 @@ public class TeacherController {
     }
 
     //从试题篮移除试题
+    @PostMapping(value = "/removeFromCart")
     public @ResponseBody Map<String, Object> removeFromCart(HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
         try{
             ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
-            String subjectId = request.getParameter("subjectId");
-            subjects.remove(subjectId);
+            Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+
+            for(int i = 0 , len= subjects.size();i<len;++i){
+                if(subjects.get(i)==subjectId){
+                    subjects.remove(i);
+                    --len;//减少一个
+                    --i;//多谢deny_guoshou指正，如果不加会出现评论1楼所说的情况。
+                }
+            }
             request.getSession().setAttribute("subjects",subjects);
             resultMap.put("resultString","移除成功！");
         }catch (Exception e){
@@ -177,11 +182,12 @@ public class TeacherController {
         }else {
             StringBuilder sb = new StringBuilder();
             for (int i = 0;i<=subjects.size()-1;i++){
+                sb.append(";");
                 sb.append(subjects.get(i));
             }
             Paper paper = new Paper();
             paper.setPaperName(paperName);
-            paper.setSubjectList(sb.toString());
+            paper.setSubjectList(sb.toString().substring(1));
             paperDao.save(paper);
             subjects.clear();
             request.getSession().setAttribute("subjects",subjects);

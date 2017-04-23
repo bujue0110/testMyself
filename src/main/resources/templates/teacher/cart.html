@@ -6,8 +6,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/index.css}" href="../../static/css/index.css">
-    <link rel="stylesheet" th:href="@{/css/wangEditor.min.css}" type="text/css" href="../../static/css/wangEditor.min.css">
-
     <title>试题</title>
 </head>
 <body>
@@ -27,12 +25,43 @@
             <div th:text="解析：+${subject.analysis}"></div>
         </div>
         <div class="btn-group lookanswers">
-            <button class="btn-fav" th:value="${subject.subjectId}" onclick="addFav(this)">添加到收藏</button>
+            <button class="btn-fav" th:value="${subject.subjectId}" onclick="removeSub(this)">从试题篮中移除</button>
             <button class="btn-answer" th:id="look+${subject.subjectId}" onclick="answerLook(this)">查看解析</button>
         </div>
     </li>
+    <button type="submit" name="submit" class="btn btn-primary" onclick="createPaper()">Submit</button>
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+        开始演示模态框
+    </button>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        请输入试卷标题
+                    </h4>
+
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="paperName" id="paperName"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="submit" name="submit" class="btn btn-primary" onclick="createPaper()">Submit</button>
+                    <!--<button type="button" class="btn btn-primary">-->
+                        <!--提交更改-->
+                    <!--</button>-->
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <span class="ul-line"></span>
-    <div th:text="${s}">
 </ul>
 <!-- 列表分页的DIV,由JS动态填充内容-->
 <ul class="pagination pagination-lg" id="link">
@@ -41,7 +70,6 @@
 
 <script th:src="@{/js/jquery.min.js}" src="../../static/js/jquery.min.js"></script>
 <script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
-<script th:src="@{/js/wangEditor.min.js}" type="text/javascript" src="../../static/js/wangEditor.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
     $(document).ready(function(){
         var typeId = Number([[${typeId}]]);
@@ -60,7 +88,6 @@
     $(window).load(function() {
         $('.contentSpan').each(
             function(index,el){
-                debugger
                 el.innerHTML = el.getAttribute('value');
             }
         )
@@ -75,17 +102,32 @@
             document.querySelector('#'+e.id).innerText = '查看解析';
         }
     }
-    function addFav(subjectId){
-
-        debugger;
+    function removeSub(subjectId){
         var subjectData = subjectId.value;
         $.ajax({
             //获取URL
             type: "POST",
-            url:"/teacher/addSubjectToPaper?subjectData=" + subjectData,
+            url:"/teacher/removeFromCart?subjectId=" + subjectData,
             dataType: "json",
             success: function(data){
                 alert(data.resultString);
+                window.location.href = '/teacher/queryCart';
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
+    function createPaper(){
+        var paperName = document.getElementById('paperName').value;
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/teacher/createPaperByCart?paperName="+paperName,
+            dataType: "json",
+            success: function(data){
+                alert(data.resultString);
+                window.location.href = '/teacher';
             },
             error: function() {
                 alert("error");
