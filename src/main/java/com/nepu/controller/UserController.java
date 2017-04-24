@@ -278,11 +278,19 @@ public class UserController {
         answerPK.setUserid(userDao.findByUsername(request.getRemoteUser()).getUserid());
         answer.setId(answerPK);
         answer.setStudentAnswer(sb.toString());
+        answer.setMarked("未批阅");
         answerDao.save(answer);
 
         resultMap.put("resultString","提交成功");
         return resultMap;
     }
 
+    //查询自己的答卷情况
+    public String queryPaper(HttpServletRequest request,Model model) throws Exception{
+        Integer userid = userDao.findByUsername(request.getRemoteUser()).getUserid();
+        List<Answer> answerList = answerDao.findById_Userid(userid);
+        model.addAttribute("answerList",answerList);
+        return "user/queryPaper";
+    }
 }
 

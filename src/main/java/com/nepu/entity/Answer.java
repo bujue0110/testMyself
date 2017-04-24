@@ -19,6 +19,7 @@ public class Answer {
     private Integer score;
     private String wrongList;
     private String remark;
+    private String marked;//是否进行了批阅
 
     public AnswerPK getId() {
         return id;
@@ -58,5 +59,13 @@ public class Answer {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getMarked() {
+        return marked;
+    }
+
+    public void setMarked(String marked) {
+        this.marked = marked;
     }
 }

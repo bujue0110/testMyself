@@ -17,4 +17,6 @@ public interface PaperDao extends BaseDao<Paper,Integer>{
 
     @Query("select p from Paper p where p.paperId = ?1")
     Paper getSubjectByPaper(Integer searchString);
+
+    Paper findByPaperName(String paperName);
 }

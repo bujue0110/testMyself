@@ -1,9 +1,10 @@
 package com.nepu.controller;
 
-import com.nepu.dao.PaperDao;
-import com.nepu.dao.SubjectDao;
-import com.nepu.dao.SubjectTypeDao;
+import com.nepu.DTO.AnswerDTO;
+import com.nepu.dao.*;
+import com.nepu.entity.Answer;
 import com.nepu.entity.Paper;
+import com.nepu.entity.PrimaryKey.AnswerPK;
 import com.nepu.entity.Subject;
 import com.nepu.entity.SubjectType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,10 @@ public class TeacherController {
     SubjectDao subjectDao;
     @Autowired
     PaperDao paperDao;
+    @Autowired
+    AnswerDao answerDao;
+    @Autowired
+    UserDao userDao;
 
     //添加试题
     @PostMapping(value = "/addSubject")
@@ -146,7 +151,7 @@ public class TeacherController {
                 if(subjects.get(i)==subjectId){
                     subjects.remove(i);
                     --len;//减少一个
-                    --i;//多谢deny_guoshou指正，如果不加会出现评论1楼所说的情况。
+                    --i;
                 }
             }
             request.getSession().setAttribute("subjects",subjects);
@@ -195,4 +200,60 @@ public class TeacherController {
         }
         return resultMap;
     }
+
+    //查询学生对于某套试卷提交的答案(按试卷名查询)
+    @GetMapping(value = "/queryAnswer/{paperName}")
+    public String queryAnswer(@PathVariable("paperName")String paperName,Model model) throws Exception{
+        //String paperName = request.getParameter("paperName");
+        Integer paperId = paperDao.findByPaperName(paperName).getPaperId();
+
+        List<Answer> answers = answerDao.findById_PaperId(paperId);
+        List<AnswerDTO> answerDTOS = new ArrayList<>();
+        for(int i = 0;i<answers.size();i++){
+            String userName =userDao.findByUserid(answers.get(i).getId().getUserid()).getUsername();
+            AnswerDTO answerDTO = new AnswerDTO();
+            answerDTO.setId(answers.get(i).getId());
+            answerDTO.setMarked(answers.get(i).getMarked());
+            //answerDTO.setRemark(answers.get(i).getRemark());
+            //answerDTO.setScore(answers.get(i).getScore());
+            //answerDTO.setStudentAnswer(answers.get(i).getStudentAnswer());
+            answerDTO.setUserName(userName);
+            //answerDTO.setWrongList(answers.get(i).getWrongList());
+            answerDTOS.add(answerDTO);
+        }
+        model.addAttribute("answerDTOS",answerDTOS);
+        return "teacher/answerList";
+    }
+    //答卷详情
+    @GetMapping(value = "/answerDetail")
+    public String mark(HttpServletRequest request,Model model){
+        Integer paperId = Integer.parseInt(request.getParameter("paperId"));
+        Integer userid = Integer.parseInt(request.getParameter("userid"));
+        AnswerPK answerPK = new AnswerPK();
+        answerPK.setUserid(userid);
+        answerPK.setPaperId(paperId);
+        Answer answer = answerDao.findById(answerPK);
+        model.addAttribute("answer",answer);
+        return "teacher/answerDetail";
+    }
+
+    //提交批改
+    @PostMapping(value ="/submitMark" )
+    public @ResponseBody Map<String, Object> submitMark(HttpServletRequest request) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        Integer userid = Integer.parseInt(request.getParameter("userid"));
+        Integer paperId = Integer.parseInt(request.getParameter("paperId"));
+        String remark = request.getParameter("remark");
+        String score = request.getParameter("score");
+        String wrongList = request.getParameter("wrongList");
+        Integer result = answerDao.mark(remark,score,wrongList,userid,paperId);
+        if (result == 1){
+            resultMap.put("returnString","提交成功！");
+        }else {
+            resultMap.put("returnString","提交失败！");
+        }
+        return resultMap;
+
+    }
+
 }

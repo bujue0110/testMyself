@@ -1,0 +1,44 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/index.css}" href="../../static/css/index.css">
+    <title>答卷</title>
+</head>
+<body>
+<ul class="questions-ul" >
+    <span class="ul-line"></span>
+    <li class = "questions-li" th:each="answer : ${answerDTOS}">
+        <div class="row indent" th:text="${answer.userName}">张三</div>
+        <div class="row indent" th:text="${answer.marked}">未批阅</div>
+        <button th:value="${answer.id.paperId}" th:name="${answer.id.userid}" onclick="mark(this)">批改</button>
+    </li>
+    <span class="ul-line"></span>
+</ul>
+<script th:src="@{/js/jquery.min.js}" src="../../static/js/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function mark(answerId){
+
+
+        var paperId = answerId.value;
+        var userid = answerId.name;
+        $.ajax({
+            //获取URL
+            type: "GET",
+            url:"/teacher/answerDetail?paperId=" + paperId + "&userid=" + userid,
+            dataType: "json",
+            success: function(data){
+                alert(data.resultString);
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
+</script>
+</body>
+</html>
