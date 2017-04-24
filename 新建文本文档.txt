@@ -2,3 +2,7 @@
 重新生成sql文件
 http://www.jianshu.com/p/e99ed60390a8
 http://blog.sina.com.cn/s/blog_e4c513fe0102w3fg.html
+
+
+http://bbs.csdn.net/topics/370149418   正确的
+http://blog.csdn.net/u012804490/article/details/29180561?utm_source=tuicool&utm_medium=referral   错误的
