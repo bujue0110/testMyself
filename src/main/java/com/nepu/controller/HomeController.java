@@ -57,6 +57,7 @@ public class HomeController {
     public @ResponseBody Map<String, Object> register(HttpServletRequest request){
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String role = request.getParameter("role");
         Map<String, Object> resultMap = new HashMap<>();
         User regUser = userDao.findByUsername(username);
 
@@ -66,7 +67,7 @@ public class HomeController {
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
-            user.setRole("ROLE_USER");
+            user.setRole(role);
             userDao.save(user);
             resultMap.put("returnString","注册成功");
         }
