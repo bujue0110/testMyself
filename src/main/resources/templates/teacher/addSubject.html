@@ -15,7 +15,8 @@
             <li role="presentation" class="active" id="select"><a href="#">选择题</a></li>
             <li role="presentation" id="fill"><a href="#">填空题</a></li>
         </ul>
-        <form class="bs-example bs-example-form" role="form" th:action="@{/teacher/addSubject}" method="post">
+        <!--th:action="@{/teacher/addSubject}"   method="post"-->
+        <form id = "MyForm" class="bs-example bs-example-form" role="form" onsubmit="PostData()">
             <div class="input-group">
                 <span class="input-group-addon">试题类别</span>
                 <select name="subjectType" class="form-control" >
@@ -31,19 +32,19 @@
             </div>
             <div class="input-group select">
                 <span class="input-group-addon">选项A</span>
-                <input required="required" type="text" class="form-control" name="aItem">
+                <input required="required" type="text" class="form-control item" name="aItem">
             </div>
             <div class="input-group select">
                 <span class="input-group-addon">选项B</span>
-                <input required="required" type="text" class="form-control" name="bItem">
+                <input required="required" type="text" class="form-control item" name="bItem">
             </div>
             <div class="input-group select">
                 <span class="input-group-addon">选项C</span>
-                <input required="required" type="text" class="form-control" name="cItem">
+                <input required="required" type="text" class="form-control item" name="cItem">
             </div>
             <div class="input-group select">
                 <span class="input-group-addon">选项D</span>
-                <input required="required" type="text" class="form-control" name="dItem">
+                <input required="required" type="text" class="form-control item" name="dItem">
             </div>
             <div class="input-group">
                 <span class="input-group-addon">正确答案</span>
@@ -69,6 +70,7 @@
 
 <script type="text/javascript">
 
+
     var editor = new Simditor({
         textarea: $('#editor')
         //optional options
@@ -77,9 +79,14 @@
     document.querySelector('#fill').onclick = function () {
         document.querySelector('#fill').className = 'active';
         document.querySelector('#select').className = '';
+        var Sitems = document.querySelectorAll('.item');
+        for (var i = 0;i<Sitems.length;i++){
+            Sitems[i].removeAttribute("required");
+        }
+
         var items = document.querySelectorAll('.select');
         for (var i = 0;i<items.length;i++){
-            items[i].className = 'input-group select hidden';
+            items[i].className = 'input-group select hidden'
         }
     };
     document.querySelector('#select').onclick = function () {
@@ -89,7 +96,29 @@
         for (var i = 0;i<items.length;i++){
             items[i].className = 'input-group select';
         }
+        var Sitems = document.querySelectorAll('.item');
+        for (var i = 0;i<Sitems.length;i++){
+            Sitems[i].setAttribute("required","required");
+        }
     };
+    
+    function PostData() {
+        //$("#MyForm").submit()
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/teacher/addSubject",
+            //dataType: "json",
+            data: $("#MyForm").serialize(),
+            success: function(data){
+                debugger
+                alert(data.resultString);
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
 </script>
 
 </body>

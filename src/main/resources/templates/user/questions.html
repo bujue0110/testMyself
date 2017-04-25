@@ -15,10 +15,10 @@
         <span class="ul-line"></span>
         <li class = "questions-li" th:each="subject : ${subjects}">
             <span class="ss"><span th:value="${subject.content}" class="contentSpan"></span></span>
-            <div class="row indent" th:text="A．+${subject.aItem}">A．（3，2）</div>
-            <div class="row indent" th:text="B．+${subject.bItem}">B．（3，1）</div>
-            <div class="row indent" th:text="C．+${subject.cItem}">C．（2，2）</div>
-            <div class="row indent" th:text="D．+${subject.dItem}">D．（-2，2）</div>
+            <div class="row indent" th:if="${subject.aItem != null}" th:text="A．+${subject.aItem}">A．（3，2）</div>
+            <div class="row indent" th:if="${subject.bItem != null}" th:text="B．+${subject.bItem}">B．（3，1）</div>
+            <div class="row indent" th:if="${subject.cItem != null}" th:text="C．+${subject.cItem}">C．（2，2）</div>
+            <div class="row indent" th:if="${subject.dItem != null}" th:text="D．+${subject.dItem}">D．（-2，2）</div>
             <div th:id="answerlook+${subject.subjectId}" class="hidden">
                 <div th:text="正确答案：+${subject.answer}"></div>
                 <div th:text="解析：+${subject.analysis}"></div>
@@ -36,7 +36,6 @@
     $(window).load(function() {
         $('.contentSpan').each(
                 function(index,el){
-                    debugger
                     el.innerHTML = el.getAttribute('value');
                 }
             )

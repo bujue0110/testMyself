@@ -88,18 +88,38 @@ public class UserController {
         return "user/questions";
     }
 
-    //试题搜索功能
-    @GetMapping(value = "/subjectsearch/{searchString}")
-    public String searchQuestion(@PathVariable("searchString")String searchString,Model model){
-        ArrayList<Subject> subjects = new ArrayList<Subject>();
-        if(searchString == null||searchString.equals("")){
-            subjects = (ArrayList<Subject>) subjectDao.findAll();
-            model.addAttribute("subjects",subjects);
-        }else {
-            subjects = (ArrayList<Subject>) subjectDao.searchQuestion(searchString);
-            model.addAttribute("subjects",subjects);
+    //试题/试卷搜索功能
+    @PostMapping(value = "/search")
+    public String search(HttpServletRequest request,Model model){
+        String searchType = request.getParameter("searchType");
+        String searchString = request.getParameter("searchString");
+        String returnPage = "";
+        if (searchType.equals("subject")){
+            ArrayList<Subject> subjects = new ArrayList<Subject>();
+            if(searchString == null||searchString.equals("")){
+                subjects = (ArrayList<Subject>) subjectDao.findAll();
+                model.addAttribute("subjects",subjects);
+                returnPage = "user/questions";
+            }else {
+                subjects = (ArrayList<Subject>) subjectDao.searchQuestion(searchString);
+                model.addAttribute("subjects",subjects);
+                returnPage = "user/questions";
+            }
+        }else if (searchType.equals("paper")){
+            ArrayList<Paper> papers = new ArrayList<>();
+            if (searchString == null||searchString.equals("")){
+                papers = (ArrayList<Paper>) paperDao.findAll();
+                model.addAttribute("papers",papers);
+                returnPage = "user/papers";
+            }else {
+                Paper paper = paperDao.findByPaperName(searchString);
+                papers.add(paper);
+                model.addAttribute("papers",papers);
+                returnPage = "user/papers";
+            }
         }
-        return "user/question";
+
+        return returnPage;
     }
 
 //    //试卷搜索功能

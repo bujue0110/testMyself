@@ -108,6 +108,13 @@ public class AdminController {
         return resultMap;
     }
 
+    @PostMapping(value = "query")
+    public @ResponseBody Map<String,Object> query(){
+        Map<String, Object> resultMap = new HashMap<>();
+        List<Paper> papers = paperDao.findAll();
+        resultMap.put("data",papers);
+        return resultMap;
+    }
     //查询全部试卷
     @GetMapping(value = "queryAllPapers")
     public String queryPapers(HttpServletRequest request,Model model){
