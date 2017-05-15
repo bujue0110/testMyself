@@ -6,3 +6,20 @@ http://blog.sina.com.cn/s/blog_e4c513fe0102w3fg.html
 
 http://bbs.csdn.net/topics/370149418   正确的
 http://blog.csdn.net/u012804490/article/details/29180561?utm_source=tuicool&utm_medium=referral   错误的
+
+
+required属性（已解决）
+选择填空ABCD（已解决），需要逐个页面替换 user/questions为例
+出题表单提交，刷新
+试题内容换行问题
+提示信息的显示
+user试卷页
+搜索
+
+datatable
+
+admin
+  试卷：（增->生成试卷页）列表（查）(id name 删)->详情（改）（移除某题，修改name，保存（刷新跳列表页））
+  试题：（增->生成试题页）列表（查）（id content type）详情（改）
+  类别：
+  用户：不能改权限

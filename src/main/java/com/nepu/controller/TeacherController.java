@@ -44,6 +44,12 @@ public class TeacherController {
             String bItem = request.getParameter("bItem");
             String cItem = request.getParameter("cItem");
             String dItem = request.getParameter("dItem");
+            if(aItem.equals("")&&bItem.equals("")&&cItem.equals("")&&dItem.equals("")){
+                aItem = null;
+                bItem = null;
+                cItem = null;
+                dItem = null;
+            }
             String answer = request.getParameter("answer");
             String analysis = request.getParameter("analysis");
             String subjectType = request.getParameter("subjectType");
@@ -84,7 +90,9 @@ public class TeacherController {
 
         PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
         Page<Subject> subjects = subjectDao.findByTypeId(typeId,pageRequest);
-
+        if(subjects == null){
+            model.addAttribute("resultString","还没有该类型的试题");
+        }
         model.addAttribute("subjects",subjects);
         model.addAttribute("totalPageNumber",subjects.getTotalElements());
         model.addAttribute("pageSize",pageSize);
@@ -122,12 +130,12 @@ public class TeacherController {
 
     //查看试题篮
     @GetMapping(value = "/queryCart")
-    public String queryCart(HttpServletRequest request,Model model){
+    public String queryCart(HttpServletRequest request,Model model) throws Exception{
         ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
         List<Subject> subjectList = new ArrayList<>();
         if (subjects == null){
             //试题篮为空
-
+            model.addAttribute("resultString","试题篮中还没有试题");
         }else {
             for (int i = 0;i<=subjects.size()-1;i++){
                 Subject subject = subjectDao.findBySubjectId(subjects.get(i));
@@ -145,7 +153,6 @@ public class TeacherController {
         try{
             ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
             Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
-
             for(int i = 0 , len= subjects.size();i<len;++i){
                 if(subjects.get(i)==subjectId){
                     subjects.remove(i);
@@ -205,19 +212,17 @@ public class TeacherController {
     public String queryAnswer(@PathVariable("paperName")String paperName,Model model) throws Exception{
         //String paperName = request.getParameter("paperName");
         Integer paperId = paperDao.findByPaperName(paperName).getPaperId();
-
         List<Answer> answers = answerDao.findById_PaperId(paperId);
+        if (answers == null){
+            model.addAttribute("resultString","还没有学生提交过试卷！");
+        }
         List<AnswerDTO> answerDTOS = new ArrayList<>();
         for(int i = 0;i<answers.size();i++){
             String userName =userDao.findByUserid(answers.get(i).getId().getUserid()).getUsername();
             com.nepu.DTO.AnswerDTO answerDTO = new AnswerDTO();
             answerDTO.setId(answers.get(i).getId());
             answerDTO.setMarked(answers.get(i).getMarked());
-            //answerDTO.setRemark(answers.get(i).getRemark());
-            //answerDTO.setScore(answers.get(i).getScore());
-            //answerDTO.setStudentAnswer(answers.get(i).getStudentAnswer());
             answerDTO.setUserName(userName);
-            //answerDTO.setWrongList(answers.get(i).getWrongList());
             answerDTOS.add(answerDTO);
         }
         model.addAttribute("answerDTOS",answerDTOS);
@@ -252,7 +257,6 @@ public class TeacherController {
             resultMap.put("returnString","提交失败！");
         }
         return resultMap;
-
     }
 
 }
