@@ -75,7 +75,10 @@
     margin-right: 10%;
 }
 .questions-li pre{
-    margin: 10px 30px;
+     margin: 10px 30px;
+ }
+.questions-li p{
+    display: inline-block;
 }
  .ul-line{
     display: inline-block;

@@ -10,8 +10,8 @@ http://blog.csdn.net/u012804490/article/details/29180561?utm_source=tuicool&utm_
 
 required属性（已解决）
 选择填空ABCD（已解决），需要逐个页面替换 user/questions为例
-出题表单提交，刷新
-试题内容换行问题
+出题表单提交，刷新 √
+试题内容换行问题 √
 提示信息的显示
 user试卷页
 搜索

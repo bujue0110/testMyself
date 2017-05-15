@@ -16,7 +16,7 @@
             <li role="presentation" id="fill"><a href="#">填空题</a></li>
         </ul>
         <!--th:action="@{/teacher/addSubject}"   method="post"-->
-        <form id = "MyForm" class="bs-example bs-example-form" role="form" onsubmit="PostData()">
+        <form id = "MyForm" class="bs-example bs-example-form" role="form">
             <div class="input-group">
                 <span class="input-group-addon">试题类别</span>
                 <select name="subjectType" class="form-control" >
@@ -55,7 +55,7 @@
                 <input required="required" type="text" class="form-control" name="analysis">
             </div>
             <div class="input-group">
-                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                <button  name="submit" class="btn btn-primary" id="submit">提交</button>
             </div>
         </form>
     </div>
@@ -102,7 +102,7 @@
         }
     };
     
-    function PostData() {
+    $('#submit').on('click', function(e) {
         //$("#MyForm").submit()
         $.ajax({
             //获取URL
@@ -111,14 +111,15 @@
             //dataType: "json",
             data: $("#MyForm").serialize(),
             success: function(data){
-                debugger
                 alert(data.resultString);
+                window.location.href = '/teacher/skipAdd';
             },
             error: function() {
                 alert("error");
             }
         });
-    }
+        e.preventDefault();
+    });
 </script>
 
 </body>
