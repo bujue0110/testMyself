@@ -1,7 +1,7 @@
 package com.nepu.controller;
 
-import com.nepu.DTO.AnswerDTO;
 import com.nepu.dao.*;
+import com.nepu.DTO.*;
 import com.nepu.entity.Answer;
 import com.nepu.entity.Paper;
 import com.nepu.entity.PrimaryKey.AnswerPK;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -211,7 +210,7 @@ public class TeacherController {
         List<AnswerDTO> answerDTOS = new ArrayList<>();
         for(int i = 0;i<answers.size();i++){
             String userName =userDao.findByUserid(answers.get(i).getId().getUserid()).getUsername();
-            AnswerDTO answerDTO = new AnswerDTO();
+            com.nepu.DTO.AnswerDTO answerDTO = new AnswerDTO();
             answerDTO.setId(answers.get(i).getId());
             answerDTO.setMarked(answers.get(i).getMarked());
             //answerDTO.setRemark(answers.get(i).getRemark());
