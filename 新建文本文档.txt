@@ -25,3 +25,14 @@ admin
   试题：（增->生成试题页）列表（查）（id content type）详情（改）
   类别：
   用户：不能改权限
+
+{
+                    targets: 0,
+                    data: "title",
+                    title: "<i class='icon-question-sign'></i>",
+                    render: function (data, type, row, meta) {
+                        var title = "<a href='" + row.html_url +
+                                "' target='_blank'>" + row.title + "</a>";
+                        return title;
+                    }
+                }
