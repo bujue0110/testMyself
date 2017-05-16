@@ -15,6 +15,8 @@ required属性（已解决）
 提示信息的显示
 user试卷页
 搜索
+contenttype msword
+
 
 datatable
 
