@@ -36,3 +36,10 @@ admin
                         return title;
                     }
                 }
+
+
+<script>
+var yuanma=document.documentElement.outerHTML;
+alert(yuanma);
+</script>
+//上面代码中yuanma变量中储存的就是本页面的源码。
