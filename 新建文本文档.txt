@@ -43,3 +43,16 @@ var yuanma=document.documentElement.outerHTML;
 alert(yuanma);
 </script>
 //上面代码中yuanma变量中储存的就是本页面的源码。
+
+user:提交试卷查询
+     搜索
+     注册
+     主页的试卷部分前端
+     页面链接写
+     我的资料前后
+     下载。。
+teacher：
+  主页  头 功能跳转
+  查询试卷提交
+admin：页面修改
+  

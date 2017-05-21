@@ -108,7 +108,7 @@ public class AdminController {
         return resultMap;
     }
 
-    @PostMapping(value = "query")
+    @GetMapping(value = "query")
     public @ResponseBody Map<String,Object> query(){
         Map<String, Object> resultMap = new HashMap<>();
         List<Paper> papers = paperDao.findAll();

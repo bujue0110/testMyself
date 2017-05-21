@@ -149,7 +149,17 @@
     $('#example').dataTable({
         "processing": true,
         "serverSide": true,
-        "ajax": "/admin/query"
+        "ajax": "/admin/query",
+        columns: [
+            {   data: 'paperId' },
+            {   data: 'paperName' },
+            {   data: 'subjectList',
+                title: "<i class='icon-question-sign'></i>",
+                render: function (data, type, row, meta) {
+                    var subjectList = "<a href='admmin/paper/"+row.paperId +"' target='_blank'>" + row.subjectList + "</a>";
+                    return subjectList;
+                }},
+        ]
     });
 
 

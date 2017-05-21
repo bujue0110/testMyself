@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -279,16 +281,19 @@ public class UserController {
         String map = request.getParameter("map");
         String[] entrys = map.split(",");
         StringBuilder sb = new StringBuilder();
+        String resultString = "提交成功";
         for(int i=1;i<=entrys.length;i++){
             String[] id_answer=entrys[i-1].split("@");
 
             if (id_answer.length==1){
                 resultMap.put("resultString","你还有未填写的试题！");
                 return resultMap;
-            }else {
+            }else if(id_answer.length>1) {
                 String answer = id_answer[1];
                 String answerString = "第"+i+"题:"+answer+";";
                 sb.append(answerString);
+            }else {
+                resultString = "提交失败";
             }
 
         }
@@ -301,11 +306,11 @@ public class UserController {
         answer.setMarked("未批阅");
         answerDao.save(answer);
 
-        resultMap.put("resultString","提交成功");
+        resultMap.put("resultString",resultString);
         return resultMap;
-    }
+}
 
-    //查询自己的答卷情况
+    //
     public String queryPaper(HttpServletRequest request,Model model) throws Exception{
         Integer userid = userDao.findByUsername(request.getRemoteUser()).getUserid();
         List<Answer> answerList = answerDao.findById_Userid(userid);
