@@ -294,3 +294,55 @@
 .father .bs-example .input-group{
     margin-bottom: 20px;
 }
+
+.father .big-logos{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.father .big-logos .big-logo{
+    text-align: center;
+    color: #666;
+}
+.father .big-logos .big-logo:hover{
+    text-decoration: none;
+}
+.father .big-logos .big-logo .logo-small-tit{
+    color: #999;
+}
+.father .big-logos .big-logo .logo-small-tit .num{
+    color: #666;
+}
+.father .big-logos .big-logo .logo-img{
+    background: url('../img/png/biglogo.png') no-repeat;
+    text-indent: -9999em;
+    outline: 0;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+}
+.father .big-logos .big-logo:first-of-type .logo-img{
+    background-position: 0 -130px;
+}
+.father .big-logos .big-logo:nth-of-type(2) .logo-img{
+    background-position: -780px -130px;
+}
+.father .big-logos .big-logo:nth-of-type(3) .logo-img{
+    background-position: -130px -130px;
+}
+.father .big-logos .big-logo:last-of-type .logo-img{
+    background-position: -1820px -130px;
+}
+.father .big-logos .big-logo:first-of-type:hover .logo-img{
+    background-position: 0 0;
+}
+.father .big-logos .big-logo:nth-of-type(2):hover .logo-img{
+    background-position: -780px 0;
+}
+.father .big-logos .big-logo:nth-of-type(3):hover .logo-img{
+    background-position: -130px 0;
+}
+.father .big-logos .big-logo:last-of-type:hover .logo-img{
+    background-position: -1820px 0;
+}

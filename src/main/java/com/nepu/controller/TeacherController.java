@@ -7,6 +7,7 @@ import com.nepu.entity.Paper;
 import com.nepu.entity.PrimaryKey.AnswerPK;
 import com.nepu.entity.Subject;
 import com.nepu.entity.SubjectType;
+import com.nepu.util.HtmlToWord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,13 @@ public class TeacherController {
     AnswerDao answerDao;
     @Autowired
     UserDao userDao;
+
+    //生成试卷
+    @GetMapping(value="/down")
+    public void down() throws  Exception{
+        HtmlToWord htmlToWord = new HtmlToWord();
+        htmlToWord.htmlToWord();
+    }
 
     //添加试题
     @PostMapping(value = "/addSubject")
