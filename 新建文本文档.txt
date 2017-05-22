@@ -56,3 +56,7 @@ teacher：
   查询试卷提交
 admin：页面修改
   
+
+
+http://www.cnblogs.com/qingxinblog/articles/3399454.html
+https://my.oschina.net/sunboy1116/blog/591493
