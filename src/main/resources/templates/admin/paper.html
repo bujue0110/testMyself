@@ -30,7 +30,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/sideBar :: sideBar">alert</div>
+    <div th:replace="fragments/sideBar :: sideBarPaper">alert</div>
 
 
 
@@ -149,16 +149,23 @@
     $('#example').dataTable({
         "processing": true,
         "serverSide": true,
-        "ajax": "/admin/query",
+        "ajax": "/admin/queryPaper",
         columns: [
             {   data: 'paperId' },
             {   data: 'paperName' },
+//            {   date: 'subjectList',
+//                render: function (data, type, row, meta) {
+//                    var subjectList = "<a class='btn btn-primary' href='admmin/paper/"+row.paperId +"' target='_blank'>" + 修改 + "</a>";
+//                    return subjectList;
+//                }
+//            },
             {   data: 'subjectList',
                 title: "<i class='icon-question-sign'></i>",
                 render: function (data, type, row, meta) {
                     var subjectList = "<a href='admmin/paper/"+row.paperId +"' target='_blank'>" + row.subjectList + "</a>";
                     return subjectList;
-                }},
+                }
+            },
         ]
     });
 

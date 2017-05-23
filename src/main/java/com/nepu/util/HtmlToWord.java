@@ -9,26 +9,19 @@ import java.io.*;
  */
 public class HtmlToWord {
 
-    public void main(String[] args) throws Exception {
-        HtmlToWord htmlToWord = new HtmlToWord();
-        htmlToWord.htmlToWord();
-    }
+    public void htmlToWord(File file,String content) throws Exception {
 
-
-
-    public void htmlToWord() throws Exception {
-        File file = new File("d:\\1.doc");
         if (!file.exists()){
             file.createNewFile();
         }
-        InputStream bodyIs = new FileInputStream("d:\\temp.html");
+        //InputStream bodyIs = new FileInputStream("d:\\temp.html");
         //InputStream cssIs = new FileInputStream("f:\\1.css");
-        String body = this.getContent(bodyIs);
-//        String css = this.getContent(cssIs);" + css + "
+        //String body = this.getContent(bodyIs);
+        //String css = this.getContent(cssIs);" + css + "
         //拼一个标准的HTML格式文档
-        String content = "<html><head><style></style></head><body>" + body + "</body></html>";
+        //String content = "<html><head><style></style></head><body>" + body + "</body></html>";
         InputStream is = new ByteArrayInputStream(content.getBytes("UTF-8"));
-        OutputStream os = new FileOutputStream("d:\\1.doc");
+        OutputStream os = new FileOutputStream(file);
         this.inputStreamToWord(is, os);
     }
 

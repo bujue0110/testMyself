@@ -37,22 +37,29 @@ public class AdminController {
     PaperDao paperDao;
 
     //查询全部用户
-    @GetMapping(value = "/queryAllUsers")
-    public String queryUser(HttpServletRequest request,Model model){
-        String pageNumberStr = request.getParameter("pageNumber");
-        if (pageNumberStr == null || "".equals(pageNumberStr)){
-            pageNumberStr = "1";
-        }
-        int pageNumber = Integer.parseInt(pageNumberStr);
-        int pageSize = 10;
-
-        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
-        Page<User> users = userDao.findAll(pageRequest);
-        model.addAttribute("users",users);
-        model.addAttribute("totalPageNumber",users.getTotalElements());
-        model.addAttribute("pageSize",pageSize);
-        return "admin/users";
+    @GetMapping(value = "/queryUser")
+    public @ResponseBody Map<String,Object> queryUser(){
+        Map<String, Object> resultMap = new HashMap<>();
+        List<User> users = userDao.findAll();
+        resultMap.put("data",users);
+        return resultMap;
     }
+//    @GetMapping(value = "/queryAllUsers")
+//    public String queryUser(HttpServletRequest request,Model model){
+//        String pageNumberStr = request.getParameter("pageNumber");
+//        if (pageNumberStr == null || "".equals(pageNumberStr)){
+//            pageNumberStr = "1";
+//        }
+//        int pageNumber = Integer.parseInt(pageNumberStr);
+//        int pageSize = 10;
+//
+//        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
+//        Page<User> users = userDao.findAll(pageRequest);
+//        model.addAttribute("users",users);
+//        model.addAttribute("totalPageNumber",users.getTotalElements());
+//        model.addAttribute("pageSize",pageSize);
+//        return "admin/users";
+//    }
 
     //删除用户
     @PostMapping(value = "/deleteUser")
@@ -76,23 +83,30 @@ public class AdminController {
 //    }
 
     //查询全部试题
-    @GetMapping(value = "queryAllSubjects")
-    public String querySubjects(HttpServletRequest request,Model model){
-        String pageNumberStr = request.getParameter("pageNumber");
-        if (pageNumberStr == null || "".equals(pageNumberStr)){
-            pageNumberStr = "1";
-        }
-        int pageNumber = Integer.parseInt(pageNumberStr);
-        int pageSize = 10;
-
-        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
-        Page<Subject> subjects = subjectDao.findAll(pageRequest);
-
-        model.addAttribute("subjects",subjects);
-        model.addAttribute("totalPageNumber",subjects.getTotalElements());
-        model.addAttribute("pageSize",pageSize);
-        return "admin/subjects";
+    @GetMapping(value = "/querySubject")
+    public @ResponseBody Map<String,Object> querySubject(){
+        Map<String, Object> resultMap = new HashMap<>();
+        List<Subject> subjects = subjectDao.findAll();
+        resultMap.put("data",subjects);
+        return resultMap;
     }
+//    @GetMapping(value = "queryAllSubjects")
+//    public String querySubjects(HttpServletRequest request,Model model){
+//        String pageNumberStr = request.getParameter("pageNumber");
+//        if (pageNumberStr == null || "".equals(pageNumberStr)){
+//            pageNumberStr = "1";
+//        }
+//        int pageNumber = Integer.parseInt(pageNumberStr);
+//        int pageSize = 10;
+//
+//        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
+//        Page<Subject> subjects = subjectDao.findAll(pageRequest);
+//
+//        model.addAttribute("subjects",subjects);
+//        model.addAttribute("totalPageNumber",subjects.getTotalElements());
+//        model.addAttribute("pageSize",pageSize);
+//        return "admin/subjects";
+//    }
 
     //删除试题
     @PostMapping(value = "/deleteSubject")
@@ -107,32 +121,32 @@ public class AdminController {
         }
         return resultMap;
     }
-
-    @GetMapping(value = "query")
-    public @ResponseBody Map<String,Object> query(){
+    //查询全部试卷
+    @GetMapping(value = "/queryPaper")
+    public @ResponseBody Map<String,Object> queryPaper(){
         Map<String, Object> resultMap = new HashMap<>();
         List<Paper> papers = paperDao.findAll();
         resultMap.put("data",papers);
         return resultMap;
     }
-    //查询全部试卷
-    @GetMapping(value = "queryAllPapers")
-    public String queryPapers(HttpServletRequest request,Model model){
-        String pageNumberStr = request.getParameter("pageNumber");
-        if (pageNumberStr == null || "".equals(pageNumberStr)){
-            pageNumberStr = "1";
-        }
-        int pageNumber = Integer.parseInt(pageNumberStr);
-        int pageSize = 10;
 
-        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
-        Page<Paper> papers = paperDao.findAll(pageRequest);
-
-        model.addAttribute("papers",papers);
-        model.addAttribute("totalPageNumber",papers.getTotalElements());
-        model.addAttribute("pageSize",pageSize);
-        return "admin/papers";
-    }
+//    @GetMapping(value = "/queryAllPapers")
+//    public String queryPapers(HttpServletRequest request,Model model){
+//        String pageNumberStr = request.getParameter("pageNumber");
+//        if (pageNumberStr == null || "".equals(pageNumberStr)){
+//            pageNumberStr = "1";
+//        }
+//        int pageNumber = Integer.parseInt(pageNumberStr);
+//        int pageSize = 10;
+//
+//        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
+//        Page<Paper> papers = paperDao.findAll(pageRequest);
+//
+//        model.addAttribute("papers",papers);
+//        model.addAttribute("totalPageNumber",papers.getTotalElements());
+//        model.addAttribute("pageSize",pageSize);
+//        return "admin/papers";
+//    }
 
     //删除用户
     @PostMapping(value = "/deletePaper")
@@ -148,10 +162,10 @@ public class AdminController {
         return resultMap;
     }
 
-    //构建PageRequest
-    private PageRequest buildPageRequest(int pageNumber, int pageSize) {
-        return new PageRequest(pageNumber - 1, pageSize, null);
-    }
+//    //构建PageRequest
+//    private PageRequest buildPageRequest(int pageNumber, int pageSize) {
+//        return new PageRequest(pageNumber - 1, pageSize, null);
+//    }
 
 
 }

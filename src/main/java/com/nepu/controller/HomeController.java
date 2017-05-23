@@ -35,7 +35,7 @@ public class HomeController {
     @GetMapping(value = "/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public String helloAdmin(){
-        return "admin/table";
+        return "admin/subject";
     }
 
     @GetMapping(value = "/teacher")

@@ -22,7 +22,73 @@
     <title>sideBar</title>
 </head>
 <body>
-<div th:fragment="sideBar">
+<div th:fragment="sideBarSubject">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
+        <!--
+            Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+            Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+        -->
+        <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="#" class="simple-text">
+                    LOGO
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li class="active">
+                    <a href="">
+                        <span class="glyphicon glyphicon-book" aria-hidden="true"></span>试题管理
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>试卷管理
+                    </a>
+                </li>
+                <li >
+                    <a href="">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>用户管理
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:fragment="sideBarPaper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
+        <!--
+            Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+            Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+        -->
+        <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="#" class="simple-text">
+                    LOGO
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li>
+                    <a href="">
+                        <span class="glyphicon glyphicon-book" aria-hidden="true"></span>试题管理
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="">
+                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>试卷管理
+                    </a>
+                </li>
+                <li >
+                    <a href="">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>用户管理
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:fragment="sideBarUser">
     <div class="sidebar" data-background-color="white" data-active-color="danger">
         <!--
             Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
@@ -42,7 +108,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/query">
+                    <a href="">
                         <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>试卷管理
                     </a>
                 </li>
