@@ -1,5 +1,6 @@
 package com.nepu.controller;
 
+import com.nepu.DTO.AnswerInfo;
 import com.nepu.dao.*;
 import com.nepu.entity.*;
 import com.nepu.entity.PrimaryKey.AnswerPK;
@@ -310,12 +311,48 @@ public class UserController {
         return resultMap;
 }
 
-    //
+    //查询自己提交的试卷
+    @GetMapping(value="/queryMyPaper")
     public String queryPaper(HttpServletRequest request,Model model) throws Exception{
         Integer userid = userDao.findByUsername(request.getRemoteUser()).getUserid();
         List<Answer> answerList = answerDao.findById_Userid(userid);
-        model.addAttribute("answerList",answerList);
-        return "user/queryPaper";
+        List<AnswerInfo> answerInfos = new ArrayList<>();
+        for (int i=0;i<answerList.size();i++){
+            AnswerInfo answerInfo = new AnswerInfo();
+            answerInfo.setId(answerList.get(i).getId());
+            answerInfo.setPaperId(answerList.get(i).getId().getPaperId());
+            answerInfo.setMarked(answerList.get(i).getMarked());
+            answerInfo.setPaperName(paperDao.findByPaperId(answerList.get(i).getId().getPaperId()).getPaperName());
+            answerInfos.add(answerInfo);
+        }
+        model.addAttribute("answerInfos",answerInfos);
+        return "user/queryMyPaper";
+    }
+    //查询试卷及评分详情
+    @GetMapping(value = "/queryPaperInfo/{paperId}")
+    public String queryPaperInfo(@PathVariable("paperId") String paperId,Model model,HttpServletRequest request){
+        Integer userid = userDao.findByUsername(request.getRemoteUser()).getUserid();
+        AnswerPK answerPK = new AnswerPK();
+        answerPK.setPaperId(Integer.parseInt(paperId));
+        answerPK.setUserid(userid);
+        Answer answer = answerDao.findById(answerPK);
+        Paper paper = paperDao.findByPaperId(Integer.parseInt(paperId));
+        model.addAttribute("answer",answer);
+        model.addAttribute("paper",paper);
+
+        String paperName = paper.getPaperName();
+        String subjectList = paper.getSubjectList();
+        String[] subjectIds = subjectList.split(";");
+        ArrayList<Subject> subjectArrayList = new ArrayList<Subject>();
+        for(int i=0;i<=subjectIds.length-1;i++){
+            Subject subject = subjectDao.getOne(Integer.parseInt(subjectIds[i]));
+            subjectArrayList.add(subject);
+        }
+        model.addAttribute("paperName",paperName);
+        model.addAttribute("paperId",paperId);
+        model.addAttribute("subjects",subjectArrayList);
+
+        return "user/queryPaperInfo";
     }
 }
 
