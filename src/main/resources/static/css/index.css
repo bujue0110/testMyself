@@ -346,3 +346,54 @@
 .father .big-logos .big-logo:last-of-type:hover .logo-img{
     background-position: -1820px 0;
 }
+.under-nav{
+    width: 980px;
+    margin: 80px auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.under-nav .under-nav-links{
+    display: inline-block;
+    width: 360px;
+    height: 200px;
+    line-height: 200px;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: rgba(197, 228, 228, 0.4);
+    text-align: center;
+    font-size: 24px;
+}
+.under-nav .under-nav-links:hover{
+    text-decoration: none;
+    background-color: rgba(197, 228, 228, 0.8);
+    box-shadow: 4px 5px 10px;
+
+}
+.under-nav .under-nav-links:nth-of-type(2){
+    background-color: rgba(63, 228, 96, 0.4);
+
+}
+.under-nav .under-nav-links:nth-of-type(2):hover{
+    background-color: rgba(63, 228, 96, 0.8);
+
+}
+
+.under-nav .under-nav-links:nth-of-type(3){
+    background-color: rgba(228, 111, 67, 0.4);
+
+}
+.under-nav .under-nav-links:nth-of-type(3):hover{
+    background-color: rgba(228, 111, 67, 0.8);
+
+}
+
+.under-nav .under-nav-links:last-of-type{
+    background-color: rgba(228, 224, 28, 0.4);
+
+}
+.under-nav .under-nav-links:last-of-type:hover{
+    background-color: rgba(228, 224, 28, 0.8);
+
+}

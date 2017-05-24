@@ -62,19 +62,22 @@
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script type="text/javascript">
     function PostData() {
+        var result = '';
         $.ajax({
             //获取URL
             type: "POST",
             url:"/user/search",
             //dataType: "json",
             data: $("#myForm").serialize(),
-            success: function(){
+            success: function(rel){
                 debugger
+                window.open('','ques',"_self");
             },
             error: function() {
                 alert("error");
             }
         });
+
     }
 
     function toggleBtn(){
