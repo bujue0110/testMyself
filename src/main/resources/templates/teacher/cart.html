@@ -29,6 +29,7 @@
             <button class="btn-answer" th:id="look+${subject.subjectId}" onclick="answerLook(this)">查看解析</button>
         </div>
     </li>
+    <a th:href="@{/teacher/down}">下载试卷</a>
     <button type="submit" name="submit" class="btn btn-primary" onclick="createPaper()">Submit</button>
     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
         开始演示模态框

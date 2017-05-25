@@ -11,11 +11,17 @@ import com.nepu.util.HtmlToWord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -35,11 +41,67 @@ public class TeacherController {
     @Autowired
     UserDao userDao;
 
-    //生成试卷
+    //生成试卷并下载
     @GetMapping(value="/down")
-    public void down() throws  Exception{
+    public ResponseEntity<byte[]> down(HttpServletRequest request) throws  Exception{
+        StringBuilder htmlbody = new StringBuilder();
+        ArrayList<Integer> subjects =  (ArrayList<Integer>) request.getSession().getAttribute("subjects");
+        if(subjects.size() > 0){
+            for(int i=0;i<subjects.size();i++){
+                Subject subject = subjectDao.findBySubjectId(subjects.get(i));
+                htmlbody.append("<div class=\"container\">\n" +
+                        "        <span class=\"question\">\n" + subject.getContent() + "\n" +
+                        "        </span>\n" +
+                        "    <div class=\"answer\">A.\n" +
+                        "        <span>\n" + subject.getaItem() + "\n" +
+                        "            </span>\n" +
+                        "    </div>\n" +
+                        "    <div class=\"answer\">B.\n" +
+                        "        <span>\n" + subject.getbItem() + "\n" +
+                        "            </span>\n" +
+                        "    </div>\n" +
+                        "    <div class=\"answer\">C.\n" +
+                        "        <span>\n" + subject.getcItem() + "\n" +
+                        "            </span>\n" +
+                        "    </div>\n" +
+                        "    <div class=\"answer\">D.\n" +
+                        "        <span>\n" + subject.getdItem() + "\n" +
+                        "            </span>\n" +
+                        "    </div>\n" +
+                        "</div>");
+            }
+        }
+        String fileName = "MyPaper.doc";
+        String content = "<html><head><style type=\"text/css\">\n" +
+                "        *{\n" +
+                "            margin: 0;\n" +
+                "            padding: 0;\n" +
+                "        }\n" +
+                "        h2{\n" +
+                "            text-align: center;\n" +
+                "            font-family: '黑体';\n" +
+                "        }\n" +
+                "        .container{\n" +
+                "            margin: 10px 80px;\n" +
+                "        }\n" +
+                "        .container .answer{\n" +
+                "            text-indent: 30px;\n" +
+                "        }\n" +
+                "    </style></head><body>" + htmlbody.toString() + "</body></html>";
+        File file = new File("d://MyPaper.doc");
+
         HtmlToWord htmlToWord = new HtmlToWord();
-        htmlToWord.htmlToWord();
+        htmlToWord.htmlToWord(file,content);
+
+        byte[] body = null;
+        InputStream is = new FileInputStream(file);
+        body = new byte[is.available()];
+        is.read(body);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attchement;filename=" + file.getName());
+        HttpStatus statusCode = HttpStatus.OK;
+        ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(body, headers, statusCode);
+        return entity;
     }
 
     //添加试题

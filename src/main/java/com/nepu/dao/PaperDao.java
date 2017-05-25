@@ -19,4 +19,6 @@ public interface PaperDao extends BaseDao<Paper,Integer>{
     Paper getSubjectByPaper(Integer searchString);
 
     Paper findByPaperName(String paperName);
+
+    Paper findByPaperId(Integer paperId);
 }

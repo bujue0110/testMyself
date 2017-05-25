@@ -12,10 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -36,22 +33,26 @@ public class AdminController {
     @Autowired
     PaperDao paperDao;
 
-    //查询全部用户
-    @GetMapping(value = "/queryAllUsers")
-    public String queryUser(HttpServletRequest request,Model model){
-        String pageNumberStr = request.getParameter("pageNumber");
-        if (pageNumberStr == null || "".equals(pageNumberStr)){
-            pageNumberStr = "1";
-        }
-        int pageNumber = Integer.parseInt(pageNumberStr);
-        int pageSize = 10;
+    @GetMapping(value = "/paper")
+    public String adminPaper(){
+        return "admin/paper";
+    }
+    @GetMapping(value = "/user")
+    public String adminUser(){
+        return "admin/user";
+    }
+    @GetMapping(value = "/subject")
+    public String adminSubject(){
+        return "admin/subject";
+    }
 
-        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
-        Page<User> users = userDao.findAll(pageRequest);
-        model.addAttribute("users",users);
-        model.addAttribute("totalPageNumber",users.getTotalElements());
-        model.addAttribute("pageSize",pageSize);
-        return "admin/users";
+    //查询全部用户
+    @GetMapping(value = "/queryUser")
+    public @ResponseBody Map<String,Object> queryUser(){
+        Map<String, Object> resultMap = new HashMap<>();
+        List<User> users = userDao.findAll();
+        resultMap.put("data",users);
+        return resultMap;
     }
 
     //删除用户
@@ -68,70 +69,45 @@ public class AdminController {
         return resultMap;
     }
 
-    //修改用户信息
-//    public @ResponseBody Map<String, Object> updateUser(HttpServletRequest request){
-//        Map<String, Object> resultMap = new HashMap<>();
-//
-//        return resultMap;
-//    }
-
     //查询全部试题
-    @GetMapping(value = "queryAllSubjects")
-    public String querySubjects(HttpServletRequest request,Model model){
-        String pageNumberStr = request.getParameter("pageNumber");
-        if (pageNumberStr == null || "".equals(pageNumberStr)){
-            pageNumberStr = "1";
-        }
-        int pageNumber = Integer.parseInt(pageNumberStr);
-        int pageSize = 10;
-
-        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
-        Page<Subject> subjects = subjectDao.findAll(pageRequest);
-
-        model.addAttribute("subjects",subjects);
-        model.addAttribute("totalPageNumber",subjects.getTotalElements());
-        model.addAttribute("pageSize",pageSize);
-        return "admin/subjects";
+    @GetMapping(value = "/querySubject")
+    public @ResponseBody Map<String,Object> querySubject(){
+        Map<String, Object> resultMap = new HashMap<>();
+        List<Subject> subjects = subjectDao.findAll();
+        resultMap.put("recordsTotal",subjects.size());
+        resultMap.put("recordsFiltered",subjects.size());
+        resultMap.put("draw",1);
+        resultMap.put("data",subjects);
+        return resultMap;
+    }
+    @PostMapping(value = "/queryOneSubject")
+    public @ResponseBody Map<String,Object> queryOneSubject(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        String subjectId = request.getParameter("subjectId");
+        Subject subject = subjectDao.findBySubjectId(Integer.parseInt(subjectId));
+        resultMap.put("data",subject);
+        return resultMap;
     }
 
     //删除试题
-    @PostMapping(value = "/deleteSubject")
-    public @ResponseBody Map<String, Object> deleteSubject(HttpServletRequest request){
+    @PostMapping(value = "/deleteSubject/{subjectId}")
+    public @ResponseBody Map<String, Object> deleteSubject(@PathVariable("subjectId")String subjectId, HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
         try{
-            Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
-            subjectDao.delete(subjectId);
+            subjectDao.delete(Integer.parseInt(subjectId));
             resultMap.put("returnString","删除成功！");
         }catch (Exception e){
             resultMap.put("returnString","删除失败！");
         }
         return resultMap;
     }
-
-    @GetMapping(value = "query")
-    public @ResponseBody Map<String,Object> query(){
+    //查询全部试卷
+    @GetMapping(value = "/queryPaper")
+    public @ResponseBody Map<String,Object> queryPaper(){
         Map<String, Object> resultMap = new HashMap<>();
         List<Paper> papers = paperDao.findAll();
         resultMap.put("data",papers);
         return resultMap;
-    }
-    //查询全部试卷
-    @GetMapping(value = "queryAllPapers")
-    public String queryPapers(HttpServletRequest request,Model model){
-        String pageNumberStr = request.getParameter("pageNumber");
-        if (pageNumberStr == null || "".equals(pageNumberStr)){
-            pageNumberStr = "1";
-        }
-        int pageNumber = Integer.parseInt(pageNumberStr);
-        int pageSize = 10;
-
-        PageRequest pageRequest = this.buildPageRequest(pageNumber,pageSize);
-        Page<Paper> papers = paperDao.findAll(pageRequest);
-
-        model.addAttribute("papers",papers);
-        model.addAttribute("totalPageNumber",papers.getTotalElements());
-        model.addAttribute("pageSize",pageSize);
-        return "admin/papers";
     }
 
     //删除用户
@@ -147,11 +123,4 @@ public class AdminController {
         }
         return resultMap;
     }
-
-    //构建PageRequest
-    private PageRequest buildPageRequest(int pageNumber, int pageSize) {
-        return new PageRequest(pageNumber - 1, pageSize, null);
-    }
-
-
 }
