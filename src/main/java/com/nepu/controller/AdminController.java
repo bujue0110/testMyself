@@ -88,10 +88,38 @@ public class AdminController {
         resultMap.put("data",subject);
         return resultMap;
     }
+    //修改试题
+    @PostMapping(value = "/updateSubject")
+    public @ResponseBody Map<String, Object> addSubject(HttpServletRequest request) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            String subjectId = request.getParameter("id");
+            String content = request.getParameter("content");
+            String aItem = request.getParameter("aItem");
+            String bItem = request.getParameter("bItem");
+            String cItem = request.getParameter("cItem");
+            String dItem = request.getParameter("dItem");
+            if(aItem.equals("")&&bItem.equals("")&&cItem.equals("")&&dItem.equals("")){
+                aItem = null;
+                bItem = null;
+                cItem = null;
+                dItem = null;
+            }
+            String answer = request.getParameter("answer");
+            String analysis = request.getParameter("analysis");
+            //String subjectType = request.getParameter("subjectType");
+            subjectDao.update(Integer.parseInt(subjectId),content,aItem,bItem,cItem,dItem,answer,analysis);
+            resultMap.put("resultString","修改成功！");
+        }catch (Exception e){
+            resultMap.put("resultString","修改失败！");
+        }
+        return resultMap;
+    }
 
     //删除试题
-    @PostMapping(value = "/deleteSubject/{subjectId}")
-    public @ResponseBody Map<String, Object> deleteSubject(@PathVariable("subjectId")String subjectId, HttpServletRequest request){
+    @PostMapping(value = "/deleteSubject")
+    public @ResponseBody Map<String, Object> deleteSubject(HttpServletRequest request){
+        String subjectId = request.getParameter("subjectId");
         Map<String, Object> resultMap = new HashMap<>();
         try{
             subjectDao.delete(Integer.parseInt(subjectId));

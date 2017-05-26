@@ -25,6 +25,8 @@
     <!--  Fonts and icons     -->
     <link th:href="@{/css/themify-icons.css}" rel="stylesheet">
 
+    <link rel="stylesheet" type="text/css" th:href="@{/css/simditor/simditor.css}"/>
+
     <!--<link th:href="@{/css/dataTables.bootstrap.css}" rel="stylesheet">-->
     <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css">
 </head>
@@ -134,11 +136,46 @@
                 <h4 class="modal-title" id="myModalLabel">修改信息</h4>
             </div>
             <div class="modal-body">
-                学号：<input type="text" name="stuno" id="stuno" />
-                密码：<input type="text" name="pass" id="pass"/>
-                姓名：<input type="text" name="stuname" id="stuname"/>
-                性别：<input type="radio" name="sex" class="sex" id="man" value="男"/>男
-                <input type="radio" name="sex" class="sex" id="women" value="女"/>女
+                <div class="father">
+                    <!--<ul class="nav nav-pills">-->
+                        <!--<li role="presentation" class="active" id="select"><a href="#">选择题</a></li>-->
+                        <!--<li role="presentation" id="fill"><a href="#">填空题</a></li>-->
+                    <!--</ul>-->
+                    <!--th:action="@{/teacher/addSubject}"   method="post"-->
+                    <form id = "MyForm" class="bs-example bs-example-form" role="form">
+                        <div class="input-group">
+                            <span class="input-group-addon">试题内容</span>
+                            <textarea required="required" id="editor" placeholder="请输入试题内容" autofocus name="content"></textarea>
+                            <!--<input type="text" class="form-control" placeholder="twitterhandle">-->
+                        </div>
+                        <div class="input-group select">
+                            <span class="input-group-addon">选项A</span>
+                            <input required="required" type="text" class="form-control item" name="aItem" id="aItem">
+                        </div>
+                        <div class="input-group select">
+                            <span class="input-group-addon">选项B</span>
+                            <input required="required" type="text" class="form-control item" name="bItem" id="bItem">
+                        </div>
+                        <div class="input-group select">
+                            <span class="input-group-addon">选项C</span>
+                            <input required="required" type="text" class="form-control item" name="cItem" id="cItem">
+                        </div>
+                        <div class="input-group select">
+                            <span class="input-group-addon">选项D</span>
+                            <input required="required" type="text" class="form-control item" name="dItem" id="dItem">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">正确答案</span>
+                            <input required="required" type="text" class="form-control" name="answer" id="answer">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">解析</span>
+                            <input required="required" type="text" class="form-control" name="analysis" id="analysis">
+                        </div>
+                        <input type="hidden" name="id" id="id"/>
+
+                    </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -167,7 +204,13 @@
 <script th:src="@{/js/bootstrap-notify.js}"></script>
 
 <script th:src="@{/js/dataTables.bootstrap.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/simditor/module.js}"></script>
+<script type="text/javascript" th:src="@{/js/simditor/hotkeys.js}"></script>
+<script type="text/javascript" th:src="@{/js/simditor/uploader.js}"></script>
+<script type="text/javascript" th:src="@{/js/simditor/simditor.js}"></script>
 <script type="text/javascript">
+
     function editInfo(subjectId) {
         $.ajax({
             //获取URL
@@ -175,7 +218,22 @@
             url:"/admin/queryOneSubject?subjectId=" + subjectId,
             dataType: "json",
                 success: function(data){
-                alert("success");
+                var subject = data.data;
+                    var editor = new Simditor({
+                        textarea: $('#editor'),
+                        //optional options
+
+                    });
+                    editor.setValue(subject.content)
+                //$('#editor').val();
+                $('#id').val(subject.subjectId);
+                $('#aItem').val(subject.aItem);
+                $('#cItem').val(subject.cItem);
+                $('#bItem').val(subject.bItem);
+                $('#dItem').val(subject.dItem);
+                $('#analysis').val(subject.analysis);
+                $('#answer').val(subject.answer);
+                $('#analysis').val(subject.analysis);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.status);
@@ -184,6 +242,8 @@
                 console.log(errorThrown);
             }
         });
+
+        $('#update').modal('show');
     }
     $('#example').dataTable({
         "paging": true,
@@ -206,12 +266,6 @@
         columns: [
             {   data: 'subjectId' },
             {   data: 'content' },
-//            {   date: 'subjectList',
-//                render: function (data, type, row, meta) {
-//                    var subjectList = "<a class='btn btn-primary' href='admmin/paper/"+row.paperId +"' target='_blank'>" + 修改 + "</a>";
-//                    return subjectList;
-//                }
-//            },
             {   data: 'subjectList',
                 title: "<i class='icon-question-sign'></i>",
                 render: function (data, type, row, meta) {
@@ -223,7 +277,9 @@
             {   data: 'subjectList',
                 title: "<i class='icon-question-sign'></i>",
                 render: function (data, type, row, meta) {
-                    var subjectList = "<a href='admmin/deleteSubject/"+row.subjectId +"' target='_blank'><span class='glyphicon glyphicon-trash'></span></a>";
+            //'href='admmin/deleteSubject/"+row.subjectId +"
+                    var subjectId = row.subjectId;
+                    var subjectList = "<a href='javascript:;' onclick='javascript:deleteInfo("+subjectId+")' target='_blank'><span class='glyphicon glyphicon-trash'></span></a>";
                     return subjectList;
                 }
             },
@@ -235,5 +291,40 @@
     $('#example')
         .removeClass( 'display' )
         .addClass('table table-striped table-bordered');
+
+    function update(e) {
+        //$("#MyForm").submit()
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/admin/updateSubject",
+            //dataType: "json",
+            data: $("#MyForm").serialize(),
+            success: function(data){
+                alert(data.resultString);
+                window.location.href = '/admin/subject';
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
+    function deleteInfo(subjectId) {
+        //$("#MyForm").submit()
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/admin/deleteSubject?subjectId="+subjectId,
+            dataType: "json",
+            success: function(data){
+                debugger;
+                alert(data.returnString);
+                window.location.href = '/admin/subject';
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
 </script>
 </html>
