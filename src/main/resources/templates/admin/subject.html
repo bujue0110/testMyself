@@ -137,11 +137,6 @@
             </div>
             <div class="modal-body">
                 <div class="father">
-                    <!--<ul class="nav nav-pills">-->
-                        <!--<li role="presentation" class="active" id="select"><a href="#">选择题</a></li>-->
-                        <!--<li role="presentation" id="fill"><a href="#">填空题</a></li>-->
-                    <!--</ul>-->
-                    <!--th:action="@{/teacher/addSubject}"   method="post"-->
                     <form id = "MyForm" class="bs-example bs-example-form" role="form">
                         <div class="input-group">
                             <span class="input-group-addon">试题内容</span>
@@ -277,7 +272,6 @@
             {   data: 'subjectList',
                 title: "<i class='icon-question-sign'></i>",
                 render: function (data, type, row, meta) {
-            //'href='admmin/deleteSubject/"+row.subjectId +"
                     var subjectId = row.subjectId;
                     var subjectList = "<a href='javascript:;' onclick='javascript:deleteInfo("+subjectId+")' target='_blank'><span class='glyphicon glyphicon-trash'></span></a>";
                     return subjectList;

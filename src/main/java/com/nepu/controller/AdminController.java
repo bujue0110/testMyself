@@ -54,13 +54,43 @@ public class AdminController {
         resultMap.put("data",users);
         return resultMap;
     }
+    @PostMapping(value = "/queryOneUser")
+    public @ResponseBody Map<String,Object> queryOneUser(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        String userId = request.getParameter("userId");
+        User user = userDao.findByUserid(Integer.parseInt(userId));
+        resultMap.put("data",user);
+        return resultMap;
+    }
+
+    //修改用户
+    @PostMapping(value = "/updateUser")
+    public @ResponseBody Map<String, Object> updateUser(HttpServletRequest request) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            String userid = request.getParameter("id");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String role = request.getParameter("role");
+            String school = request.getParameter("school");
+            String interest = request.getParameter("interest");
+            String company = request.getParameter("company");
+            String age = request.getParameter("age");
+
+            userDao.update(company,school,interest,Integer.parseInt(age),Integer.parseInt(userid),username,password,role);
+            resultMap.put("resultString","修改成功！");
+        }catch (Exception e){
+            resultMap.put("resultString","修改失败！");
+        }
+        return resultMap;
+    }
 
     //删除用户
     @PostMapping(value = "/deleteUser")
     public @ResponseBody Map<String, Object> deleteUser(HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
         try{
-            Integer userid = Integer.parseInt(request.getParameter("userid"));
+            Integer userid = Integer.parseInt(request.getParameter("userId"));
             userDao.delete(userid);
             resultMap.put("returnString","删除成功！");
         }catch (Exception e){
@@ -90,7 +120,7 @@ public class AdminController {
     }
     //修改试题
     @PostMapping(value = "/updateSubject")
-    public @ResponseBody Map<String, Object> addSubject(HttpServletRequest request) throws Exception{
+    public @ResponseBody Map<String, Object> updateSubject(HttpServletRequest request) throws Exception{
         Map<String, Object> resultMap = new HashMap<>();
         try {
             String subjectId = request.getParameter("id");
@@ -137,8 +167,31 @@ public class AdminController {
         resultMap.put("data",papers);
         return resultMap;
     }
+    @PostMapping(value = "/queryOnePaper")
+    public @ResponseBody Map<String,Object> queryOnePaper(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        String paperId = request.getParameter("paperId");
+        Paper paper = paperDao.findByPaperId(Integer.parseInt(paperId));
+        resultMap.put("data",paper);
+        return resultMap;
+    }
+    //修改试卷
+    @PostMapping(value = "/updatePaper")
+    public @ResponseBody Map<String, Object> updatePaper(HttpServletRequest request) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            String paperId = request.getParameter("id");
+            String paperName = request.getParameter("paperName");
+            String subjectList = request.getParameter("subjectList");
+            paperDao.update(paperId,paperName,subjectList);
+            resultMap.put("resultString","修改成功！");
+        }catch (Exception e){
+            resultMap.put("resultString","修改失败！");
+        }
+        return resultMap;
+    }
 
-    //删除用户
+    //删除试卷
     @PostMapping(value = "/deletePaper")
     public @ResponseBody Map<String, Object> deletePaper(HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();

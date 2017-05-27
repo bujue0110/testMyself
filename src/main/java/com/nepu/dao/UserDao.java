@@ -19,8 +19,13 @@ public interface UserDao extends BaseDao<User,Integer>{
 
    @Transactional
    @Modifying
-   @Query("update User u set u.company = :company,u.school = :school,u.interest = :interest,u.age = :age where u.userid = :id")
+   @Query("update User u set u.company =?1,u.school =?2,u.interest =?3,u.age =?4 where u.userid =?5")
    int updateInfo(String company,String school,String interest,Integer age,Integer id);
+
+   @Transactional
+   @Modifying
+   @Query("update User u set u.company =?1,u.school =?2,u.interest =?3,u.age =?4,u.username=?6,u.password=?7,u.role=?8 where u.userid =?5")
+   int update(String company,String school,String interest,Integer age,Integer id,String userName,String password,String role);
 
    User findByUserid(Integer userId);
 

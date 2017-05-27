@@ -147,22 +147,39 @@
 
 
     $('#example').dataTable({
+        "paging": true,
+        "iDisplayLength": 10, //默认每页数量
+        //"bPaginate": true, //翻页功能
+        "bLengthChange": true, //改变每页显示数据数量
+        "bFilter": true, //过滤功能
+        "bSort": true, //排序功能
+        "bInfo": true, //页脚信息
+        "bRetrieve": true,
+        "bStateSave" :false,
+        //"serverSide" : true,//服务器端进行分页处理的意思
+        "bPaginate": true,
+        //"bProcessing": true
         "processing": true,
-        "serverSide": true,
-        "ajax": "/admin/queryPaper",
+        "serverSide": false,
+        "ajax": {url:"/admin/queryUser",
+            dataSrc:'data'
+        },
         columns: [
-            {   data: 'paperId' },
-            {   data: 'paperName' },
-//            {   date: 'subjectList',
-//                render: function (data, type, row, meta) {
-//                    var subjectList = "<a class='btn btn-primary' href='admmin/paper/"+row.paperId +"' target='_blank'>" + 修改 + "</a>";
-//                    return subjectList;
-//                }
-//            },
+            {   data: 'userId' },
+            {   data: 'userName' },
             {   data: 'subjectList',
                 title: "<i class='icon-question-sign'></i>",
                 render: function (data, type, row, meta) {
-                    var subjectList = "<a href='admmin/paper/"+row.paperId +"' target='_blank'>" + row.subjectList + "</a>";
+                    var userId = row.userid;
+                    var subjectList = "<a href='javascript:;' onclick='javascript:editInfo("+userId+")'><span class='glyphicon glyphicon-pencil'></span></a>";
+                    return subjectList;
+                }
+            },
+            {   data: 'subjectList',
+                title: "<i class='icon-question-sign'></i>",
+                render: function (data, type, row, meta) {
+                    var userId = row.userid;
+                    var subjectList = "<a href='javascript:;' onclick='javascript:deleteInfo("+userId+")' target='_blank'><span class='glyphicon glyphicon-trash'></span></a>";
                     return subjectList;
                 }
             },
@@ -174,5 +191,38 @@
     $('#example')
         .removeClass( 'display' )
         .addClass('table table-striped table-bordered');
+
+    function update(e) {
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/admin/updateUser",
+            data: $("#MyForm").serialize(),
+            success: function(data){
+                alert(data.resultString);
+                window.location.href = '/admin/user';
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
+    function deleteInfo(userId) {
+        //$("#MyForm").submit()
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/admin/deleteUser?userId="+userId,
+            dataType: "json",
+            success: function(data){
+                debugger;
+                alert(data.returnString);
+                window.location.href = '/admin/user';
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
 </script>
 </html>

@@ -80,7 +80,8 @@
             <tr>
                 <th>试卷编号</th>
                 <th>试卷名称</th>
-                <th>操作</th>
+                <th>修改</th>
+                <th>删除</th>
             </tr>
             </thead>
             <tbody>
@@ -123,7 +124,39 @@
 
     </div>
 </div>
-
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">修改信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="father">
+                    <form id = "MyForm" class="bs-example bs-example-form" role="form">
+                        <div class="input-group select">
+                            <span class="input-group-addon">试卷名称</span>
+                            <input required="required" type="text" class="form-control item" name="paperName" id="paperName">
+                        </div>
+                        <div class="input-group select">
+                            <span class="input-group-addon">试题列表</span>
+                            <input required="required" type="text" class="form-control item" name="subjectList" id="subjectList">
+                        </div>
+                        <input type="hidden" name="id" id="id"/>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="update()">提交更改</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）end -->
 
 </body>
 
@@ -145,24 +178,60 @@
 <script type="text/javascript">
 
 
+    function editInfo(paperId) {
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/admin/queryOnePaper?paperId=" + paperId,
+            dataType: "json",
+            success: function(data){
+                var paper = data.data;
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.status);
+                console.log(XMLHttpRequest.readyState);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        });
+
+        $('#update').modal('show');
+    }
 
     $('#example').dataTable({
+        "paging": true,
+        "iDisplayLength": 10, //默认每页数量
+        //"bPaginate": true, //翻页功能
+        "bLengthChange": true, //改变每页显示数据数量
+        "bFilter": true, //过滤功能
+        "bSort": true, //排序功能
+        "bInfo": true, //页脚信息
+        "bRetrieve": true,
+        "bStateSave" :false,
+        //"serverSide" : true,//服务器端进行分页处理的意思
+        "bPaginate": true,
+        //"bProcessing": true
         "processing": true,
-        "serverSide": true,
-        "ajax": "/admin/queryPaper",
+        "serverSide": false,
+        "ajax": {url:"/admin/queryPaper",
+            dataSrc:'data'
+        },
         columns: [
             {   data: 'paperId' },
             {   data: 'paperName' },
-//            {   date: 'subjectList',
-//                render: function (data, type, row, meta) {
-//                    var subjectList = "<a class='btn btn-primary' href='admmin/paper/"+row.paperId +"' target='_blank'>" + 修改 + "</a>";
-//                    return subjectList;
-//                }
-//            },
             {   data: 'subjectList',
                 title: "<i class='icon-question-sign'></i>",
                 render: function (data, type, row, meta) {
-                    var subjectList = "<a href='admmin/paper/"+row.paperId +"' target='_blank'>" + row.subjectList + "</a>";
+                    var paperId = row.paperId;
+                    var subjectList = "<a href='javascript:;' onclick='javascript:editInfo("+paperId+")'><span class='glyphicon glyphicon-pencil'></span></a>";
+                    return subjectList;
+                }
+            },
+            {   data: 'subjectList',
+                title: "<i class='icon-question-sign'></i>",
+                render: function (data, type, row, meta) {
+                    var paperId = row.paperId;
+                    var subjectList = "<a href='javascript:;' onclick='javascript:deleteInfo("+paperId+")' target='_blank'><span class='glyphicon glyphicon-trash'></span></a>";
                     return subjectList;
                 }
             },
@@ -174,5 +243,38 @@
     $('#example')
         .removeClass( 'display' )
         .addClass('table table-striped table-bordered');
+
+    function update(e) {
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/admin/updatePaper",
+            //dataType: "json",
+            data: $("#MyForm").serialize(),
+            success: function(data){
+                alert(data.resultString);
+                window.location.href = '/admin/paper';
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
+    function deleteInfo(subjectId) {
+        $.ajax({
+            //获取URL
+            type: "POST",
+            url:"/admin/deletePaper?paperId="+paperId,
+            dataType: "json",
+            success: function(data){
+                debugger;
+                alert(data.returnString);
+                window.location.href = '/admin/paper';
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+    }
 </script>
 </html>
