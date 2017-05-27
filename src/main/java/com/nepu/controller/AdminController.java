@@ -2,9 +2,11 @@ package com.nepu.controller;
 
 import com.nepu.dao.PaperDao;
 import com.nepu.dao.SubjectDao;
+import com.nepu.dao.SubjectTypeDao;
 import com.nepu.dao.UserDao;
 import com.nepu.entity.Paper;
 import com.nepu.entity.Subject;
+import com.nepu.entity.SubjectType;
 import com.nepu.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,8 @@ import java.util.Map;
 @RequestMapping(value = "/admin")
 public class AdminController {
 
+    @Autowired
+    SubjectTypeDao subjectTypeDao;
     @Autowired
     UserDao userDao;
     @Autowired
@@ -198,6 +202,56 @@ public class AdminController {
         try{
             Integer paperId = Integer.parseInt(request.getParameter("paperId"));
             paperDao.delete(paperId);
+            resultMap.put("returnString","删除成功！");
+        }catch (Exception e){
+            resultMap.put("returnString","删除失败！");
+        }
+        return resultMap;
+    }
+
+
+    //查询全部类别
+    @GetMapping(value = "/queryType")
+    public @ResponseBody Map<String,Object> queryType(){
+        Map<String, Object> resultMap = new HashMap<>();
+        List<SubjectType> subjectTypes = subjectTypeDao.findAll();
+        resultMap.put("recordsTotal",subjectTypes.size());
+        resultMap.put("recordsFiltered",subjectTypes.size());
+        resultMap.put("draw",1);
+        resultMap.put("data",subjectTypes);
+        return resultMap;
+    }
+    @PostMapping(value = "/queryOneType")
+    public @ResponseBody Map<String,Object> queryOneType(HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        String typeId = request.getParameter("typeId");
+        SubjectType subjectType = subjectTypeDao.findByTypeId(Integer.parseInt(typeId));
+        resultMap.put("data",subjectType);
+        return resultMap;
+    }
+    //修改试题
+    @PostMapping(value = "/updateType")
+    public @ResponseBody Map<String, Object> updateType(HttpServletRequest request) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            String typeId = request.getParameter("id");
+            String typeName = request.getParameter("typeName");
+
+            subjectTypeDao.update(Integer.parseInt(typeId),typeName);
+            resultMap.put("resultString","修改成功！");
+        }catch (Exception e){
+            resultMap.put("resultString","修改失败！");
+        }
+        return resultMap;
+    }
+
+    //删除试题
+    @PostMapping(value = "/deleteType")
+    public @ResponseBody Map<String, Object> deleteType(HttpServletRequest request){
+        String typeId = request.getParameter("typeId");
+        Map<String, Object> resultMap = new HashMap<>();
+        try{
+            subjectTypeDao.delete(Integer.parseInt(typeId));
             resultMap.put("returnString","删除成功！");
         }catch (Exception e){
             resultMap.put("returnString","删除失败！");
