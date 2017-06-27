@@ -38,7 +38,6 @@
     $(window).load(function() {
         $('.contentSpan').each(
             function(index,el){
-                debugger
                 el.innerHTML = el.getAttribute('value');
             }
         )
@@ -53,8 +52,6 @@
         }
     }
     function deleteFav(subjectId){
-
-        debugger;
         var subjectData = subjectId.value;
         $.ajax({
             //获取URL

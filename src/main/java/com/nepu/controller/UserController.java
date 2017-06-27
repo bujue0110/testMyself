@@ -92,7 +92,7 @@ public class UserController {
     }
 
     //试题/试卷搜索功能
-    @PostMapping(value = "/search")
+    @GetMapping(value = "/search")
     public String search(HttpServletRequest request,Model model){
         String searchType = request.getParameter("searchType");
         String searchString = request.getParameter("searchString");
@@ -241,20 +241,23 @@ public class UserController {
             }
         }
         String s = sb.toString();
+        if(s.equals("")){
+            s = "恭喜您，全部正确!";
+        }
         // 返回结果串
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("status", "success");
-        resultMap.put("resultString", sb.toString());
+        resultMap.put("resultString", s);
         System.out.print(resultMap.get("resultString"));
         return resultMap;
     }
 
     //查询个人信息
     @GetMapping(value = "/queryInfo")
-    public String queryInfo(HttpServletRequest request,Model model){
+    public String queryInfo(HttpServletRequest request,Model model) throws Exception{
         User user = userDao.findByUsername(request.getRemoteUser());
-        model.addAttribute("userInfo",user);
-        return "/user/queryInfo";
+        model.addAttribute("user",user);
+        return "/user/info";
     }
 
     //修改个人信息
@@ -286,13 +289,16 @@ public class UserController {
         for(int i=1;i<=entrys.length;i++){
             String[] id_answer=entrys[i-1].split("@");
 
-            if (id_answer.length==1){
-                resultMap.put("resultString","你还有未填写的试题！");
-                return resultMap;
-            }else if(id_answer.length>1) {
+//            if (id_answer.length==1){
+//                resultMap.put("resultString","你还有未填写的试题！");
+//                return resultMap;
+//            }else
+            if(id_answer.length>1) {
                 String answer = id_answer[1];
-                String answerString = "第"+i+"题:"+answer+";";
+                int a = i-1;
+                String answerString = "第"+a+"题:"+answer+";";
                 sb.append(answerString);
+                resultString = "提交成功";
             }else {
                 resultString = "提交失败";
             }

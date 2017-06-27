@@ -10,10 +10,23 @@
     <title>试题</title>
 </head>
 <body>
-<!--<div th:replace="fragments/header :: head">alert</div>-->
+<div th:replace="fragments/teach_header :: head">alert</div>
 <!--改成显示试题编号，分页位置、颜色调整-->
-<a th:href="@{/teacher/queryCart}">查看试题篮</a>
-<ul class="questions-ul" >
+<div class="father">
+<p>
+    <a class="nav-title" th:href="@{/teacher/queryCart}">查看试题篮</a>
+</p>
+<div class="nav-wrapper">
+    <ul class="nav nav-pills nav-content">
+        <li><a th:href="@{/teacher/questions/1}">JAVA</a></li>
+        <li><a th:href="@{/teacher/questions/2}">C</a></li>
+        <li><a th:href="@{/teacher/questions/3}">JavaScript</a></li>
+        <li><a th:href="@{/teacher/questions/4}">Python</a></li>
+        <li><a th:href="@{/teacher/questions/5}">C++</a></li>
+        <li><a th:href="@{/teacher/questions/6}">算法</a></li>
+    </ul>
+</div>
+<ul class="questions-ul" style="margin: 10px auto;">
     <span class="ul-line"></span>
     <li class = "questions-li" th:each="subject : ${subjects}">
         <!--[[${subject.content}]]-->
@@ -35,10 +48,13 @@
 
 </ul>
 <!-- 列表分页的DIV,由JS动态填充内容-->
-<ul class="pagination pagination-lg" id="link">
+    <div class="pagination-wrapper">
+        <ul class="pagination pagination-lg" id="link">
 
-</ul><br>
-
+        </ul>
+    </div>
+<br>
+</div>
 <script th:src="@{/js/jquery.min.js}" src="../../static/js/jquery.min.js"></script>
 <script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js"></script>
 <script type="text/javascript" th:inline="javascript">

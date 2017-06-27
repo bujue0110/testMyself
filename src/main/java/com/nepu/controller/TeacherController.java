@@ -194,7 +194,7 @@ public class TeacherController {
             }
         }
         request.getSession().setAttribute("subjects",subjects);
-        //向页面输出两个超链接 一个是继续购物 ，一个是结算
+        //向页面输出两个超链接 一个是继续添加试题 ，一个是提交生成试卷
         return resultMap;
     }
 

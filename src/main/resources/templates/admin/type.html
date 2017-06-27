@@ -32,9 +32,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/sideBar :: sideBarUser">alert</div>
-
-
+    <div th:replace="fragments/sideBar :: sideBarType">alert</div>
 
     <div class="main-panel">
         <nav class="navbar navbar-default">
@@ -80,8 +78,8 @@
         <table id="example" class="display" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th>用户编号</th>
-                <th>用户名</th>
+                <th>类别编号</th>
+                <th>类别名称</th>
                 <th>修改</th>
                 <th>删除</th>
             </tr>
@@ -138,34 +136,12 @@
             <div class="modal-body">
                 <div class="father">
                     <form id = "MyForm" class="bs-example bs-example-form" role="form">
+
                         <div class="input-group select">
-                            <span class="input-group-addon">用户名</span>
-                            <input required="required" type="text" class="form-control item" name="username" id="username">
+                            <span class="input-group-addon">类别名称</span>
+                            <input required="required" type="text" class="form-control item" name="typeName" id="typeName">
                         </div>
-                        <div class="input-group select">
-                            <span class="input-group-addon">密码</span>
-                            <input required="required" type="text" class="form-control item" name="password" id="password">
-                        </div>
-                        <div class="input-group select">
-                            <span class="input-group-addon">角色</span>
-                            <input required="required" type="text" class="form-control item" name="role" id="role">
-                        </div>
-                        <div class="input-group select">
-                            <span class="input-group-addon">学校</span>
-                            <input required="required" type="text" class="form-control item" name="school" id="school">
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">兴趣</span>
-                            <input required="required" type="text" class="form-control" name="interest" id="interest">
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">公司</span>
-                            <input required="required" type="text" class="form-control" name="company" id="company">
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">年龄</span>
-                            <input required="required" type="text" class="form-control" name="age" id="age">
-                        </div>
+
                         <input type="hidden" name="id" id="id"/>
 
                     </form>
@@ -205,24 +181,17 @@
 <script type="text/javascript" th:src="@{/js/simditor/simditor.js}"></script>
 <script type="text/javascript">
 
-    function editInfo(userid) {
+    function editInfo(typeId) {
         $.ajax({
             //获取URL
             type: "POST",
-            url:"/admin/queryOneUser?userid=" + userid,
+            url:"/admin/queryOneType?typeId=" + typeId,
             dataType: "json",
             success: function(data){
-                var user = data.data;
+                var type = data.data;
 
-                $('#id').val(user.userid);
-                $('#username').val(user.username);
-                $('#password').val(user.password);
-                $('#interest').val(user.interest);
-                $('#role').val(user.role);
-                $('#company').val(user.company);
-                $('#age').val(user.age);
-                $('#school').val(user.school);
-
+                $('#typeName').val(type.typeName);
+                $('#id').val(type.typeId);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.status);
@@ -249,25 +218,25 @@
         //"bProcessing": true
         "processing": true,
         "serverSide": false,
-        "ajax": {url:"/admin/queryUser",
+        "ajax": {url:"/admin/queryType",
             dataSrc:'data'
         },
         columns: [
-            {   data: 'userid' },
-            {   data: 'username' },
+            {   data: 'typeId' },
+            {   data: 'typeName' },
             {   data: 'subjectList',
                 title: "<i class='icon-question-sign'></i>",
                 render: function (data, type, row, meta) {
-                    var userid = row.userid;
-                    var subjectList = "<a href='javascript:;' onclick='javascript:editInfo("+userid+")'><span class='glyphicon glyphicon-pencil'></span></a>";
+                    var typeId = row.typeId;
+                    var subjectList = "<a href='javascript:;' onclick='javascript:editInfo("+typeId+")'><span class='glyphicon glyphicon-pencil'></span></a>";
                     return subjectList;
                 }
             },
             {   data: 'subjectList',
                 title: "<i class='icon-question-sign'></i>",
                 render: function (data, type, row, meta) {
-                    var userid = row.userid;
-                    var subjectList = "<a href='javascript:;' onclick='javascript:deleteInfo("+userid+")' target='_blank'><span class='glyphicon glyphicon-trash'></span></a>";
+                    var typeId = row.typeId;
+                    var subjectList = "<a href='javascript:;' onclick='javascript:deleteInfo("+typeId+")' target='_blank'><span class='glyphicon glyphicon-trash'></span></a>";
                     return subjectList;
                 }
             },
@@ -281,44 +250,38 @@
         .addClass('table table-striped table-bordered');
 
     function update(e) {
-        //$("#MyForm").submit()
         $.ajax({
             //获取URL
             type: "POST",
-            url:"/admin/updateSubject",
-            //dataType: "json",
+            url:"/admin/updateType",
             data: $("#MyForm").serialize(),
             success: function(data){
                 alert(data.resultString);
-                window.location.href = '/admin/user';
+                window.location.href = '/admin/type';
             },
             error: function() {
                 alert("error");
             }
         });
     }
-    function deleteInfo(userid) {
-        //$("#MyForm").submit()
+    function deleteInfo(typeId) {
         var flag = confirm('确定删除嘛？');
-        if(flag){
-            $.ajax({
-                //获取URL
-                type: "POST",
-                url:"/admin/deleteUser?userid="+userid,
-                dataType: "json",
-                success: function(data){
-                    debugger;
-                    alert(data.returnString);
-                    window.location.href = '/admin/user';
-                },
-                error: function() {
-                    alert("error");
-                }
-            });
-        }else{
-            return;
-        }
-
+            if(flag){
+               $.ajax({
+             //获取URL
+             type: "POST",
+             url:"/admin/deleteType?typeId="+typeId,
+             dataType: "json",
+             success: function(data){
+                debugger;
+                alert(data.returnString);
+                window.location.href = '/admin/type';
+             },
+             error: function() {
+                alert("error");
+              }
+             });
+         }
     }
 </script>
 </html>

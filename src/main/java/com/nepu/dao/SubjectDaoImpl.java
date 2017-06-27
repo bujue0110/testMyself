@@ -21,7 +21,7 @@ public class SubjectDaoImpl {
     JdbcTemplate jdbcTemplate;
 
     public List<Subject> getRandomSub(final String typeId) {
-        String sql = "select * from subject s where s.a_item <> and s.type_id = ? order by rand() limit 5";
+        String sql = "select * from subject s where s.a_item <> '' and s.type_id = ? order by rand() limit 5";
         List<Subject> subjects = new ArrayList<>();
         jdbcTemplate.query(sql, new Object[]{typeId}, new RowCallbackHandler() {
             @Override

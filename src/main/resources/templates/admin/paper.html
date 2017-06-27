@@ -186,6 +186,9 @@
             dataType: "json",
             success: function(data){
                 var paper = data.data;
+                $('#id').val(paper.paperId);
+                $('#paperName').val(paper.paperName);
+                $('#subjectList').val(paper.subjectList);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.status);
@@ -261,7 +264,9 @@
         });
     }
     function deleteInfo(subjectId) {
-        $.ajax({
+        var flag = confirm('确定删除嘛？');
+        if(flag){
+         $.ajax({
             //获取URL
             type: "POST",
             url:"/admin/deletePaper?paperId="+paperId,
@@ -274,7 +279,8 @@
             error: function() {
                 alert("error");
             }
-        });
+             });
+         }
     }
 </script>
 </html>

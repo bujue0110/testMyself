@@ -8,15 +8,15 @@
     <body>
     <div th:replace="fragments/header :: head">alert</div>
         <div class="father">
-            <h1 th:inline="text">您好， [[${#httpServletRequest.remoteUser}]]!</h1>
-            <p><a th:href="@{/admin}">前往管理员界面</a></p>
-            <p><a th:href="@{/user/questions}">全部试题</a></p>
-            <p><a th:href="@{/user/questionsPage}">全部试题分页</a></p>
-            <p><a th:href="@{/user/paperSub/1}">第一套试卷</a></p>
-            <p><a th:href="@{/user/paperDownLoad/1}">第一套试卷下载</a></p>
-            <p><a th:href="@{/user/paperSub/2}">第二套试卷</a></p>
+            <!--<h1 th:inline="text">您好， [[${#httpServletRequest.remoteUser}]]!</h1>-->
+            <!--<p><a th:href="@{/admin}">前往管理员界面</a></p>-->
+            <!--<p><a th:href="@{/user/questions}">全部试题</a></p>-->
+            <!--<p><a th:href="@{/user/questionsPage}">全部试题分页</a></p>-->
+            <!--<p><a th:href="@{/user/paperSub/1}">第一套试卷</a></p>-->
+            <!--<p><a th:href="@{/user/paperDownLoad/1}">第一套试卷下载</a></p>-->
+            <!--<p><a th:href="@{/user/paperSub/2}">第二套试卷</a></p>-->
 
-
+            <h3 class="title">自主测试</h3>
 
             <div class="logo-container">
                 <div class="logo-left">
@@ -79,13 +79,14 @@
                     </div>
                 </div>
             </div>
+            <h3 class="title">试卷测试</h3>
             <div class="big-logos">
-                <a href="" class="big-logo">
+                <a th:href="@{/user/paperSub/3}" class="big-logo">
                     <div class="logo-img">
 
                     </div>
                     <div class="logo-big-tit">
-                        阿里巴巴笔试面试题
+                        百度笔试面试题
                     </div>
                 </a>
                 <a href="" class="big-logo">
@@ -101,7 +102,7 @@
 
                     </div>
                     <div class="logo-big-tit">
-                        阿里巴巴笔试面试题
+                        腾讯笔试面试题
                     </div>
                 </a>
                 <a href="" class="big-logo">
@@ -109,7 +110,7 @@
 
                     </div>
                     <div class="logo-big-tit">
-                        阿里巴巴笔试面试题
+                        网易笔试面试题
                     </div>
                 </a>
             </div>

@@ -49,6 +49,10 @@ public class AdminController {
     public String adminSubject(){
         return "admin/subject";
     }
+    @GetMapping(value = "/type")
+    public String adminType(){
+        return "admin/type";
+    }
 
     //查询全部用户
     @GetMapping(value = "/queryUser")
@@ -56,12 +60,15 @@ public class AdminController {
         Map<String, Object> resultMap = new HashMap<>();
         List<User> users = userDao.findAll();
         resultMap.put("data",users);
+        resultMap.put("recordsTotal",users.size());
+        resultMap.put("recordsFiltered",users.size());
+        resultMap.put("draw",1);
         return resultMap;
     }
     @PostMapping(value = "/queryOneUser")
     public @ResponseBody Map<String,Object> queryOneUser(HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
-        String userId = request.getParameter("userId");
+        String userId = request.getParameter("userid");
         User user = userDao.findByUserid(Integer.parseInt(userId));
         resultMap.put("data",user);
         return resultMap;

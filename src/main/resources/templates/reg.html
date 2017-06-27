@@ -4,16 +4,17 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-
-<html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>用户登录</title>
+    <title>用户注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Free HTML5 Template by FreeHTML5.co" />
     <meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
+
+
+
 
     <!-- Facebook and Twitter integration -->
     <meta property="og:title" content=""/>
@@ -33,11 +34,9 @@
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/animate.css}">
-    <link rel="stylesheet"  th:href="@{/css/style.css}" href="../static/css/style.css">
-    <link rel="stylesheet" th:href="@{/css/index.css}" href="../static/css/index.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <!-- Modernizr JS -->
-
     <script th:src="@{/js/modernizr-2.6.2.min.js}"></script>
     <!-- FOR IE9 below -->
     <!--[if lt IE 9]>
@@ -45,7 +44,7 @@
     <![endif]-->
 
 </head>
-<body>
+<body class="style-3 bgbgbg">
 
 <div class="container">
 
@@ -54,24 +53,31 @@
 
 
             <!-- Start Sign In Form -->
-            <form th:action="@{/login}" method="post" class="fh5co-form animate-box" data-animate-effect="fadeInRight">
-                <h2>登 录</h2>
+            <form action="/register" class="fh5co-form animate-box" data-animate-effect="fadeInRight">
+                <h2>注 册</h2>
                 <div class="form-group">
-                    <label for="username" class="sr-only">Username</label>
-                    <input type="text" class="form-control" name="username" id="username" placeholder="Username" autocomplete="off">
+                    <label for="name" class="sr-only">用户名</label>
+                    <input type="text" class="form-control" name="username" id="name" placeholder="用户名" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="password" class="sr-only">Password</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off">
-                </div>
-                <!--<div class="form-group">-->
-                    <!--<label for="remember"><input type="checkbox" id="remember"> Remember Me</label>-->
-                <!--</div>-->
-                <div class="form-group">
-                    <p>还没注册? <a th:href="@{/reg}">注册</a> | <a href="forgot3.html">忘记密码?</a></p>
+                    <label for="password" class="sr-only">密码</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="密 码" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="登录" class="btn btn-primary">
+                    <label for="re-password" class="sr-only">确认密码</label>
+                    <input type="password" class="form-control" id="re-password" placeholder="再次输入密码" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <select name="role">
+                        <option value="ROLE_USER" selected>学生</option>
+                        <option value="ROLE_TEACHER">教师</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <p>已经注册了？<a href="index3.html">登录</a></p>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="注 册" class="btn btn-primary">
                 </div>
             </form>
             <!-- END Sign In Form -->
@@ -79,7 +85,9 @@
 
         </div>
     </div>
-
+    <div class="row" style="padding-top: 60px; clear: both;">
+        <div class="col-md-12 text-center"><p><small>&copy; All Rights Reserved.<a href="" target="_blank" title="">东北石油大学 软工13-1 李俊沨</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></small></p></div>
+    </div>
 </div>
 
 <!-- jQuery -->

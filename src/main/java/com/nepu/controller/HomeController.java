@@ -29,7 +29,7 @@ public class HomeController {
 
     @RequestMapping(value = {"", "/home"}, method= RequestMethod.GET)
     public String home(){
-        return "home";
+        return "login";
     }
 
     @GetMapping(value = "/admin")
@@ -46,6 +46,11 @@ public class HomeController {
     @PreAuthorize("hasRole('USER')")
     public String helloUser(){
         return "user/helloUser";
+    }
+
+    @RequestMapping(value = "/reg", method=RequestMethod.GET)
+    public String reg(){
+        return "reg";
     }
 
     @RequestMapping(value = "/login", method=RequestMethod.GET)

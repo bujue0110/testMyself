@@ -40,40 +40,41 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar bar1"></span>
-                        <span class="icon-bar bar2"></span>
-                        <span class="icon-bar bar3"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Table List</a>
+                    <!--<button type="button" class="navbar-toggle">-->
+                        <!--<span class="sr-only">Toggle navigation</span>-->
+                        <!--<span class="icon-bar bar1"></span>-->
+                        <!--<span class="icon-bar bar2"></span>-->
+                        <!--<span class="icon-bar bar3"></span>-->
+                    <!--</button>-->
+                    <a class="btn btn-warning" href="#">添加试题</a>
                 </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="ti-bell"></i>
-                                <p class="notification">5</p>
-                                <p>Notifications</p>
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Notification 1</a></li>
-                                <li><a href="#">Notification 2</a></li>
-                                <li><a href="#">Notification 3</a></li>
-                                <li><a href="#">Notification 4</a></li>
-                                <li><a href="#">Another notification</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="ti-settings"></i>
-                                <p>Settings</p>
-                            </a>
-                        </li>
-                    </ul>
+                <!--<a th:href="@{/logout}" class="register userName" th:method="post">退 出</a>-->
+                <!--<div class="collapse navbar-collapse">-->
+                    <!--<ul class="nav navbar-nav navbar-right">-->
+                        <!--<li class="dropdown">-->
+                            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
+                                <!--<i class="ti-bell"></i>-->
+                                <!--<p class="notification">5</p>-->
+                                <!--<p>Notifications</p>-->
+                                <!--<b class="caret"></b>-->
+                            <!--</a>-->
+                            <!--<ul class="dropdown-menu">-->
+                                <!--<li><a href="#">Notification 1</a></li>-->
+                                <!--<li><a href="#">Notification 2</a></li>-->
+                                <!--<li><a href="#">Notification 3</a></li>-->
+                                <!--<li><a href="#">Notification 4</a></li>-->
+                                <!--<li><a href="#">Another notification</a></li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<a href="#">-->
+                                <!--<i class="ti-settings"></i>-->
+                                <!--<p>Settings</p>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
 
-                </div>
+                <!--</div>-->
             </div>
         </nav>
 
@@ -98,27 +99,27 @@
         <footer class="footer">
             <div class="container-fluid">
                 <nav class="pull-left">
-                    <ul>
+                    <!--<ul>-->
 
-                        <li>
-                            <a href="#">
-                                Creative Tim
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://blog.creative-tim.com">
-                                Blog
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/license">
-                                Licenses
-                            </a>
-                        </li>
-                    </ul>
+                        <!--<li>-->
+                            <!--<a href="#">-->
+                                <!--Creative Tim-->
+                            <!--</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<a href="http://blog.creative-tim.com">-->
+                                <!--Blog-->
+                            <!--</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<a href="#/license">-->
+                                <!--Licenses-->
+                            <!--</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
                 </nav>
                 <div class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="#">LEE</a>.
+                    &copy; <script>document.write(new Date().getFullYear())</script>, Copyright 东北石油大学软工13-1李俊沨.
                 </div>
             </div>
         </footer>
@@ -216,8 +217,6 @@
                 var subject = data.data;
                     var editor = new Simditor({
                         textarea: $('#editor'),
-                        //optional options
-
                     });
                     editor.setValue(subject.content)
                 //$('#editor').val();
@@ -237,7 +236,6 @@
                 console.log(errorThrown);
             }
         });
-
         $('#update').modal('show');
     }
     $('#example').dataTable({
@@ -304,21 +302,26 @@
         });
     }
     function deleteInfo(subjectId) {
-        //$("#MyForm").submit()
-        $.ajax({
-            //获取URL
-            type: "POST",
-            url:"/admin/deleteSubject?subjectId="+subjectId,
-            dataType: "json",
-            success: function(data){
-                debugger;
-                alert(data.returnString);
-                window.location.href = '/admin/subject';
-            },
-            error: function() {
-                alert("error");
-            }
-        });
+        var flag = confirm('确定删除嘛？');
+        if(flag){
+            $.ajax({
+                //获取URL
+                type: "POST",
+                url:"/admin/deleteSubject?subjectId="+subjectId,
+                dataType: "json",
+                success: function(data){
+                    debugger;
+                    alert(data.returnString);
+                    window.location.href = '/admin/subject';
+                },
+                error: function() {
+                    alert("error");
+                }
+            });
+        }else{
+            return;
+        }
+
     }
 </script>
 </html>
